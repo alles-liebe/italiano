@@ -13,13 +13,11 @@
     --line: #E5E0D8;
     --accent: #C85A2A;
     --accent-light: #F2E4DC;
-    --new: #3A7D44;
     --green: #3A7D44;
     --green-light: #E6F4E8;
     --red: #C0392B;
     --red-light: #FDECEA;
     --gold: #D4A843;
-    --gold-light: #FAF1DC;
     --radius: 14px;
     --font: 'Georgia', serif;
     --ui: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -46,1286 +44,608 @@
   .header-title { font-family: var(--font); font-size: 18px; font-style: italic; color: var(--accent); }
   .header-stats { display: flex; gap: 12px; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
   .header-stat strong { color: var(--ink); font-weight: 600; }
-  .greeting { padding: 18px 20px 8px; font-family: var(--font); font-style: italic; color: var(--muted); font-size: 14px; }
-  .main-action {
-    margin: 8px 20px 18px;
-    background: var(--surface);
-    color: var(--ink);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    padding: 18px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    cursor: pointer;
-    width: calc(100% - 40px);
+  .tabs {
+    display: flex; gap: 8px; padding: 12px 20px 0; overflow-x: auto;
   }
-  .main-action:active { transform: scale(0.99); }
-  .main-action.disabled { border: 1px dashed var(--line); cursor: default; }
-  .main-action-text { text-align: left; }
-  .main-action-title { font-family: var(--font); font-style: italic; font-size: 18px; color: var(--accent); margin-bottom: 2px; }
-  .main-action.disabled .main-action-title { color: var(--muted); }
-  .main-action-sub { font-size: 12px; color: var(--muted); }
-  .main-action-count {
-    background: var(--accent); color: white;
-    border-radius: 20px; padding: 5px 12px;
-    font-size: 14px; font-weight: 700; min-width: 36px; text-align: center;
+  .tab {
+    padding: 8px 14px; border-radius: 20px; font-size: 13px; font-weight: 600;
+    background: var(--surface); border: 1px solid var(--line); color: var(--muted);
+    white-space: nowrap; cursor: pointer;
   }
-  .main-action.disabled .main-action-count { background: var(--line); color: var(--muted); }
-  .section-label { padding: 18px 20px 8px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
-  .map-list { padding: 0 20px; display: flex; flex-direction: column; gap: 8px; }
-  .loc-row {
-    background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
-    padding: 14px 16px; display: flex; align-items: center; gap: 14px; cursor: pointer;
-  }
-  .loc-row:active { transform: scale(0.99); }
-  .loc-emoji { font-size: 28px; line-height: 1; }
-  .loc-info { flex: 1; }
-  .loc-name { font-family: var(--font); font-style: italic; font-size: 16px; color: var(--ink); margin-bottom: 2px; }
-  .loc-character { font-size: 11px; color: var(--muted); }
-  .loc-progress { text-align: right; }
-  .loc-progress-num { font-family: var(--font); font-style: italic; font-size: 14px; color: var(--accent); }
-  .loc-progress-lbl { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
-  .boss-row {
-    background: var(--gold-light); border: 1px solid var(--gold); border-radius: 12px;
-    padding: 14px 16px; display: flex; align-items: center; gap: 14px;
-    cursor: pointer; margin: 0 20px 8px;
-  }
-  .boss-row:active { transform: scale(0.99); }
-  .boss-row.due { background: var(--accent-light); border-color: var(--accent); }
-  .boss-emoji { font-size: 28px; }
-  .boss-info { flex: 1; }
-  .boss-title { font-family: var(--font); font-style: italic; font-size: 15px; color: var(--ink); margin-bottom: 2px; }
-  .boss-sub { font-size: 11px; color: var(--muted); }
-  .boss-stars { font-size: 12px; color: var(--gold); letter-spacing: 2px; }
-  .extra-row {
-    margin: 8px 20px 0; padding: 14px 16px;
-    background: var(--surface); border: 1px dashed var(--line); border-radius: 12px;
-    cursor: pointer; display: flex; align-items: center; gap: 14px;
-  }
-  .extra-row:active { transform: scale(0.99); }
-  .extra-emoji { font-size: 22px; }
-  .extra-text { flex: 1; }
-  .extra-title { font-family: var(--font); font-style: italic; font-size: 14px; }
-  .extra-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
-  .extra-count { background: var(--bg); border-radius: 12px; padding: 3px 10px; font-size: 12px; color: var(--muted); font-weight: 600; }
-  .view-hidden { display: none !important; }
-  .card-view-top {
-    padding: 14px 20px 0; display: flex; align-items: center; justify-content: space-between; font-size: 13px;
-  }
-  .back-btn { background: none; border: none; color: var(--muted); font-size: 13px; cursor: pointer; padding: 6px 0; }
-  .mode-badge {
-    background: var(--accent-light); color: var(--accent);
-    padding: 4px 12px; border-radius: 12px;
-    font-size: 11px; font-weight: 600;
-    text-transform: uppercase; letter-spacing: 0.06em;
-  }
-  .mode-badge.boss { background: var(--gold-light); color: #B07028; }
-  .card-wrap { padding: 12px 20px; }
-  .card {
+  .tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .screen { padding: 18px 20px 40px; max-width: 520px; margin: 0 auto; }
+  .card-box {
     background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
-    padding: 20px 18px; min-height: 280px; display: flex; flex-direction: column;
+    padding: 22px 18px; margin-bottom: 14px;
   }
-  .card-loc {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: var(--bg); border: 1px solid var(--line);
-    padding: 4px 10px; border-radius: 12px;
-    font-size: 12px; color: var(--muted);
-    font-family: var(--font); font-style: italic;
-    margin-bottom: 14px; align-self: flex-start;
+  .dir-badge {
+    display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .04em;
+    color: var(--accent); background: var(--accent-light); padding: 3px 9px; border-radius: 10px;
+    margin-bottom: 12px; text-transform: uppercase;
   }
-  .speaker { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; font-size: 13px; color: var(--muted); }
-  .speaker-emoji { font-size: 18px; }
-  .speaker-name { font-weight: 600; color: var(--ink); }
-  .card-type {
-    font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;
-    color: var(--muted); margin-bottom: 12px;
-    display: flex; align-items: center; gap: 6px;
+  .prompt-text { font-family: var(--font); font-size: 21px; line-height: 1.4; margin-bottom: 16px; }
+  .prompt-text.it { font-style: italic; }
+  input[type=text] {
+    width: 100%; padding: 13px 14px; border: 1.5px solid var(--line); border-radius: 10px;
+    font-size: 16px; font-family: var(--ui); background: var(--bg); color: var(--ink);
   }
-  .card-type-icon { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
-  .card-type-icon.new { background: var(--new); }
-  .card-context { font-size: 13px; color: var(--muted); font-style: italic; margin-bottom: 10px; }
-  .card-prompt { font-size: 18px; line-height: 1.5; color: var(--ink); }
-  .card-prompt-it { font-family: var(--font); font-style: italic; color: var(--accent); }
-  .card-instruction { font-size: 13px; color: var(--muted); margin-top: 10px; }
-  .answer-input {
-    width: 100%; border: 1.5px solid var(--line); border-radius: 10px;
-    padding: 12px 14px; font-size: 16px; font-family: var(--ui);
-    color: var(--ink); background: var(--bg);
-    resize: none; min-height: 70px; outline: none; margin-top: 18px;
+  input[type=text]:focus { outline: none; border-color: var(--accent); }
+  .btn {
+    display: block; width: 100%; padding: 13px; border-radius: 10px; border: none;
+    font-size: 15px; font-weight: 600; margin-top: 10px; cursor: pointer; font-family: var(--ui);
   }
-  .answer-input:focus { border-color: var(--accent); background: var(--surface); }
-  .reveal { margin-top: 16px; display: none; }
-  .reveal.visible { display: block; }
-  .reveal-row { padding: 12px 14px; border-radius: 10px; margin-bottom: 8px; font-size: 15px; line-height: 1.5; }
-  .reveal-row.yours { background: var(--bg); border: 1px solid var(--line); }
-  .reveal-row.model { background: var(--green-light); border: 1px solid #B8D8BC; }
-  .reveal-row.wrong { background: var(--red-light); border: 1px solid #F0C4C0; }
-  .reveal-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 4px; }
-  .reveal-row.model .reveal-label { color: var(--green); }
-  .reveal-row.wrong .reveal-label { color: var(--red); }
-  .reveal-text { font-family: var(--font); font-style: italic; }
-  .reveal-text.ru { font-family: var(--ui); font-style: normal; }
-  .reveal-explain { font-size: 13px; color: var(--muted); padding: 0 4px; margin-top: 6px; line-height: 1.5; }
-  .show-btn {
-    margin-top: 28px; width: 100%;
-    background: var(--ink); color: white;
-    border: none; border-radius: 12px;
-    padding: 14px; font-size: 15px; font-weight: 600; cursor: pointer;
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-secondary { background: var(--surface); border: 1.5px solid var(--line); color: var(--ink); }
+  .feedback {
+    margin-top: 14px; padding: 13px 14px; border-radius: 10px; font-size: 14px; line-height: 1.5;
   }
-  .show-btn:active { transform: scale(0.98); }
-  .rate-buttons { display: none; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 16px; }
-  .rate-buttons.visible { display: grid; }
-  .rate-btn { border: 1.5px solid var(--line); background: var(--surface); border-radius: 10px; padding: 12px 8px; cursor: pointer; text-align: center; }
-  .rate-btn:active { transform: scale(0.97); }
-  .rate-btn-label { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
-  .rate-btn-interval { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
-  .rate-btn.again { border-color: #E8B5B0; }
-  .rate-btn.again .rate-btn-label { color: var(--red); }
-  .rate-btn.hard { border-color: #E8D0B0; }
-  .rate-btn.hard .rate-btn-label { color: #B07028; }
-  .rate-btn.good { border-color: #B8D8BC; }
-  .rate-btn.good .rate-btn-label { color: var(--green); }
-  .rate-btn.easy { border-color: #B0CCE8; }
-  .rate-btn.easy .rate-btn-label { color: #2A6BAF; }
-  .boss-intro {
-    margin: 20px 20px 0; background: var(--surface);
-    border: 1px solid var(--gold); border-radius: 16px;
-    padding: 24px 20px; text-align: center;
+  .feedback.correct { background: var(--green-light); color: var(--green); }
+  .feedback.almost { background: var(--gold-light, #FAF1DC); color: #8a6d1f; }
+  .feedback.wrong { background: var(--red-light); color: var(--red); }
+  .feedback .answer-line { font-weight: 700; margin-top: 4px; }
+  .topics-line { font-size: 11px; color: var(--muted); margin-top: 10px; }
+  .progress-bar-wrap { height: 5px; background: var(--line); border-radius: 3px; margin-bottom: 16px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: var(--accent); transition: width .3s; }
+  .empty-state { text-align: center; padding: 60px 20px; color: var(--muted); }
+  .empty-state .big { font-size: 42px; margin-bottom: 14px; }
+  .diary-entry {
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 14px 16px; margin-bottom: 10px;
   }
-  .boss-intro-emoji { font-size: 56px; margin-bottom: 12px; }
-  .boss-intro-title { font-family: var(--font); font-style: italic; font-size: 22px; color: var(--accent); margin-bottom: 6px; }
-  .boss-intro-titleRu { font-size: 13px; color: var(--muted); margin-bottom: 18px; }
-  .boss-intro-desc { font-size: 14px; line-height: 1.5; margin-bottom: 16px; color: var(--ink); text-align: left; }
-  .boss-intro-rules { background: var(--bg); border-radius: 10px; padding: 14px; font-size: 13px; color: var(--muted); line-height: 1.6; text-align: left; margin-bottom: 18px; }
-  .boss-start { width: 100%; background: var(--accent); color: white; border: none; border-radius: 12px; padding: 14px; font-size: 16px; font-weight: 600; cursor: pointer; }
-  .boss-progress { padding: 8px 20px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); display: flex; align-items: center; gap: 8px; }
-  .boss-prog-track { flex: 1; height: 4px; background: var(--line); border-radius: 2px; overflow: hidden; }
-  .boss-prog-fill { height: 100%; background: var(--accent); transition: width 0.3s; }
-  .boss-reaction { margin-top: 12px; padding: 12px 14px; border-radius: 10px; font-size: 14px; font-style: italic; line-height: 1.5; display: none; }
-  .boss-reaction.visible { display: block; }
-  .boss-reaction.ok { background: var(--green-light); border: 1px solid #B8D8BC; color: var(--green); }
-  .boss-reaction.fail { background: var(--red-light); border: 1px solid #F0C4C0; color: var(--red); }
-  .boss-continue { display: none; margin-top: 16px; width: 100%; background: var(--accent); color: white; border: none; border-radius: 12px; padding: 14px; font-size: 15px; font-weight: 600; cursor: pointer; }
-  .boss-continue.visible { display: block; }
-  .boss-result { padding: 50px 20px 20px; text-align: center; }
-  .boss-result-emoji { font-size: 56px; margin-bottom: 12px; }
-  .boss-result-title { font-family: var(--font); font-style: italic; font-size: 24px; color: var(--accent); margin-bottom: 6px; }
-  .boss-result-score { font-size: 14px; color: var(--muted); margin-bottom: 20px; }
-  .boss-result-stars { font-size: 36px; letter-spacing: 4px; color: var(--gold); margin-bottom: 18px; }
-  .boss-result-stars .dim { opacity: 0.25; }
-  .postcard { margin: 0 auto 20px; max-width: 320px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
-  .postcard-top { background: linear-gradient(135deg, var(--accent-light), var(--gold-light)); padding: 24px 20px; text-align: center; border-bottom: 1px dashed var(--line); }
-  .postcard-emoji { font-size: 40px; margin-bottom: 8px; }
-  .postcard-title { font-family: var(--font); font-style: italic; font-size: 18px; color: var(--accent); }
-  .postcard-body { padding: 16px 20px; }
-  .postcard-phrase { font-family: var(--font); font-style: italic; font-size: 14px; color: var(--ink); text-align: center; margin-bottom: 8px; line-height: 1.5; }
-  .postcard-date { font-size: 11px; color: var(--muted); text-align: center; text-transform: uppercase; letter-spacing: 0.08em; }
-  .diary-view { padding: 16px 20px; }
-  .diary-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 18px; }
-  .diary-title { font-family: var(--font); font-style: italic; font-size: 20px; color: var(--accent); margin-bottom: 6px; }
-  .diary-prompt { font-size: 13px; color: var(--muted); margin-bottom: 14px; line-height: 1.5; }
-  .diary-input { width: 100%; border: 1.5px solid var(--line); border-radius: 10px; padding: 12px 14px; font-size: 16px; font-family: var(--font); font-style: italic; color: var(--ink); background: var(--bg); resize: none; min-height: 100px; outline: none; }
-  .diary-input:focus { border-color: var(--accent); background: var(--surface); }
-  .diary-actions { display: flex; gap: 10px; margin-top: 14px; }
-  .diary-btn { flex: 1; border: 1.5px solid var(--line); background: var(--surface); border-radius: 10px; padding: 12px; font-size: 14px; cursor: pointer; font-weight: 600; }
-  .diary-btn.primary { background: var(--ink); color: white; border-color: var(--ink); }
-  .diary-past { margin-top: 24px; }
-  .diary-past-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 10px; }
-  .diary-entry { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; margin-bottom: 8px; }
-  .diary-entry-date { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
-  .diary-entry-text { font-family: var(--font); font-style: italic; font-size: 14px; line-height: 1.5; }
-  .cartoline-view { padding: 16px 20px; }
-  .cartoline-intro { font-family: var(--font); font-style: italic; color: var(--muted); font-size: 14px; text-align: center; margin-bottom: 18px; }
-  .cartoline-empty { text-align: center; padding: 40px 20px; color: var(--muted); font-size: 14px; line-height: 1.5; }
-  .done-screen { display: none; text-align: center; padding: 50px 20px 30px; }
-  .done-screen.visible { display: block; }
-  .done-emoji { font-size: 52px; margin-bottom: 14px; }
-  .done-title { font-family: var(--font); font-style: italic; font-size: 22px; color: var(--accent); margin-bottom: 8px; }
-  .done-sub { font-size: 13px; color: var(--muted); margin-bottom: 22px; line-height: 1.5; }
-  .done-stats { display: inline-flex; gap: 24px; padding: 14px 22px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; margin-bottom: 18px; }
-  .done-stat-num { font-family: var(--font); font-style: italic; font-size: 22px; color: var(--accent); }
-  .done-stat-lbl { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-top: 2px; }
-  .done-cta { display: block; margin: 0 auto; background: var(--ink); color: white; border: none; border-radius: 12px; padding: 12px 24px; font-size: 14px; cursor: pointer; }
-  .reset-link { display: block; text-align: center; margin-top: 28px; color: var(--muted); font-size: 12px; text-decoration: underline; cursor: pointer; background: none; border: none; width: 100%; }
+  .diary-date { font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+  textarea {
+    width: 100%; min-height: 110px; padding: 13px 14px; border: 1.5px solid var(--line); border-radius: 10px;
+    font-size: 15px; font-family: var(--ui); background: var(--bg); color: var(--ink); resize: vertical;
+  }
+  textarea:focus { outline: none; border-color: var(--accent); }
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
+  .stat-tile { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; text-align: center; }
+  .stat-tile .num { font-size: 24px; font-weight: 700; color: var(--accent); }
+  .stat-tile .label { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .reset-link { display: block; text-align: center; margin-top: 30px; font-size: 12px; color: var(--muted); }
 </style>
 </head>
 <body>
 
 <div class="header">
-  <span class="header-title">Italiano</span>
+  <div class="header-title">Italiano</div>
   <div class="header-stats">
-    <span class="header-stat">Liv. <strong id="hLevel">1</strong></span>
-    <span class="header-stat"><strong id="hXP">0</strong> XP</span>
-    <span class="header-stat"><strong id="hStreak">0</strong>🔥</span>
+    <div class="header-stat"><strong id="hStreak">0</strong> дней подряд</div>
+    <div class="header-stat"><strong id="hToday">0</strong> сегодня</div>
   </div>
 </div>
 
-<div id="mapView">
-  <div class="greeting" id="greeting"></div>
-  <button class="main-action" id="mainAction" onclick="startMixedQueue()">
-    <div class="main-action-text">
-      <div class="main-action-title" id="maTitle">Coda di oggi</div>
-      <div class="main-action-sub" id="maSub">Tutte le località mescolate</div>
-    </div>
-    <div class="main-action-count" id="maCount">0</div>
-  </button>
-  <div class="section-label">La città</div>
-  <div class="map-list" id="mapList"></div>
-  <div id="bossSection"></div>
-  <div class="section-label">Diario e ricordi</div>
-  <div class="extra-row" onclick="openDiary()">
-    <div class="extra-emoji">📖</div>
-    <div class="extra-text">
-      <div class="extra-title">Il diario</div>
-      <div class="extra-sub" id="diarySub">Una frase su oggi</div>
-    </div>
-  </div>
-  <div class="extra-row" onclick="openCartoline()">
-    <div class="extra-emoji">📮</div>
-    <div class="extra-text">
-      <div class="extra-title">Le cartoline</div>
-      <div class="extra-sub">Ricordi dei tuoi incontri</div>
-    </div>
-    <div class="extra-count" id="cartolineCount">0</div>
-  </div>
-  <button class="reset-link" onclick="resetAll()">Resetta progressi</button>
+<div class="tabs">
+  <div class="tab active" data-tab="study">📚 Практика</div>
+  <div class="tab" data-tab="diary">✍️ Дневник</div>
+  <div class="tab" data-tab="stats">📊 Прогресс</div>
 </div>
 
-<div id="cardView" class="view-hidden">
-  <div class="card-view-top">
-    <button class="back-btn" onclick="backToMap()">← Indietro</button>
-    <span class="mode-badge" id="modeBadge"></span>
-  </div>
-  <div class="card-wrap">
-    <div class="card" id="card">
-      <span class="card-loc" id="cardLoc"></span>
-      <div class="speaker" id="cardSpeaker"></div>
-      <div class="card-type" id="cardType"></div>
-      <div class="card-context" id="cardContext"></div>
-      <div class="card-prompt" id="cardPrompt"></div>
-      <div class="card-instruction" id="cardInstruction"></div>
-      <textarea class="answer-input" id="answerInput" placeholder="Scrivi la tua risposta…" rows="3"
-        autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false"></textarea>
-      <div class="reveal" id="reveal">
-        <div class="reveal-row yours">
-          <div class="reveal-label">La tua risposta</div>
-          <div class="reveal-text" id="yourAnswer"></div>
-        </div>
-        <div class="reveal-row model">
-          <div class="reveal-label" id="modelLabel">Modello</div>
-          <div class="reveal-text" id="modelAnswer"></div>
-        </div>
-        <div class="reveal-explain" id="explain"></div>
-      </div>
-      <button class="show-btn" id="showBtn" onclick="showAnswer()">Mostra risposta</button>
-      <div class="rate-buttons" id="rateButtons">
-        <button class="rate-btn again" onclick="rate(1)"><div class="rate-btn-label">Di nuovo</div><div class="rate-btn-interval" id="intAgain">&lt; 10 min</div></button>
-        <button class="rate-btn hard" onclick="rate(2)"><div class="rate-btn-label">Difficile</div><div class="rate-btn-interval" id="intHard">~ 1 giorno</div></button>
-        <button class="rate-btn good" onclick="rate(3)"><div class="rate-btn-label">Bene</div><div class="rate-btn-interval" id="intGood">~ 3 giorni</div></button>
-        <button class="rate-btn easy" onclick="rate(4)"><div class="rate-btn-label">Facile</div><div class="rate-btn-interval" id="intEasy">~ 6 giorni</div></button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div id="bossIntroView" class="view-hidden">
-  <div class="card-view-top">
-    <button class="back-btn" onclick="backToMap()">← Indietro</button>
-    <span class="mode-badge boss">Incontro speciale</span>
-  </div>
-  <div class="boss-intro" id="bossIntro"></div>
-</div>
-
-<div id="bossSceneView" class="view-hidden">
-  <div class="card-view-top">
-    <button class="back-btn" onclick="confirmBossExit()">← Esci</button>
-    <span class="mode-badge boss" id="bossSceneBadge"></span>
-  </div>
-  <div class="boss-progress">
-    <span id="bossProgText">Battuta 1 / 6</span>
-    <div class="boss-prog-track"><div class="boss-prog-fill" id="bossProgFill" style="width:0%"></div></div>
-  </div>
-  <div class="card-wrap">
-    <div class="card">
-      <div class="speaker" id="bossSpeaker"></div>
-      <div class="card-prompt" id="bossPrompt"></div>
-      <div class="card-instruction" id="bossInstruction"></div>
-      <textarea class="answer-input" id="bossInput" placeholder="Scrivi la tua risposta…" rows="3"
-        autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false"></textarea>
-      <div class="reveal" id="bossReveal">
-        <div class="reveal-row" id="bossYoursRow">
-          <div class="reveal-label">La tua risposta</div>
-          <div class="reveal-text" id="bossYours"></div>
-        </div>
-        <div class="reveal-row model">
-          <div class="reveal-label">Modello</div>
-          <div class="reveal-text" id="bossModel"></div>
-        </div>
-        <div class="boss-reaction" id="bossReaction"></div>
-      </div>
-      <button class="show-btn" id="bossSubmit" onclick="submitBossReply()">Rispondi</button>
-      <button class="boss-continue" id="bossContinue" onclick="nextBossReply()">Continua →</button>
-    </div>
-  </div>
-</div>
-
-<div id="bossResultView" class="view-hidden">
-  <div class="boss-result" id="bossResult"></div>
-</div>
-
-<div id="diaryView" class="view-hidden">
-  <div class="card-view-top">
-    <button class="back-btn" onclick="backToMap()">← Indietro</button>
-    <span class="mode-badge">Diario</span>
-  </div>
-  <div class="diary-view">
-    <div class="diary-card">
-      <div class="diary-title">Una frase su oggi</div>
-      <div class="diary-prompt">Опиши свой день одной-двумя фразами по-итальянски. Не важно идеально или нет — это твоё.</div>
-      <textarea class="diary-input" id="diaryInput" placeholder="Oggi…"
-        autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false"></textarea>
-      <div class="diary-actions">
-        <button class="diary-btn" onclick="backToMap()">Più tardi</button>
-        <button class="diary-btn primary" onclick="saveDiary()">Salva</button>
-      </div>
-    </div>
-    <div class="diary-past" id="diaryPast"></div>
-  </div>
-</div>
-
-<div id="cartolineView" class="view-hidden">
-  <div class="card-view-top">
-    <button class="back-btn" onclick="backToMap()">← Indietro</button>
-    <span class="mode-badge">Cartoline</span>
-  </div>
-  <div class="cartoline-view">
-    <div class="cartoline-intro">I ricordi dei tuoi incontri</div>
-    <div id="cartolineList"></div>
-  </div>
-</div>
-
-<div id="doneScreen" class="done-screen">
-  <div class="done-emoji">☕</div>
-  <div class="done-title">Basta per oggi!</div>
-  <div class="done-sub">La coda è vuota.<br>Torna domani — le carte riappariranno.</div>
-  <div class="done-stats">
-    <div class="done-stat"><div class="done-stat-num" id="doneCount">0</div><div class="done-stat-lbl">Oggi</div></div>
-    <div class="done-stat"><div class="done-stat-num" id="doneXP">0</div><div class="done-stat-lbl">+XP</div></div>
-    <div class="done-stat"><div class="done-stat-num" id="doneStreak">0🔥</div><div class="done-stat-lbl">Serie</div></div>
-  </div>
-  <button class="done-cta" onclick="backToMap()">Torna alla città</button>
-</div>
+<div class="screen" id="screen"></div>
 
 <script>
-const LOCATIONS = [
-  { id: 'caffe', emoji: '☕', name: 'Il Caffè', nameRu: 'кафе',
-    character: { id: 'marco', name: 'Marco', emoji: '👨\u200d🍳', role: 'barista' } },
-  { id: 'mercato', emoji: '🍋', name: 'Il Mercato', nameRu: 'рынок',
-    character: { id: 'giulia', name: 'Giulia', emoji: '👩\u200d🌾', role: 'fruttivendola' } },
-  { id: 'casa', emoji: '🏠', name: 'La Casa', nameRu: 'дом',
-    character: { id: 'rossi', name: 'Sig.ra Rossi', emoji: '👵', role: 'vicina di casa' } }
-];
-
+/* ============== CARD DATA ==============
+   Each card mixes 2+ grammar points where natural.
+   it / itAlt: acceptable Italian answers
+   ru / ruAlt: acceptable Russian answers
+   topics: for coverage / mixing
+*/
 const CARDS = [
-  { id: 'c1', loc: 'caffe', speaker: 'marco', type: 'dialogue',
-    context: 'Marco видит тебя впервые',
-    speakerSays: 'Buongiorno! Mi chiamo Marco. E tu?',
-    instruction: 'Представься по-итальянски',
-    answer: 'Mi chiamo Polina.', altAnswers: ['Sono Polina.'],
-    explain: 'Mi chiamo + имя. Букв. "я себя зову". Местоимение io опускается (pro-drop).',
-    saves: 'name' },
-  { id: 'c2', loc: 'caffe', speaker: 'marco', type: 'ru_to_it',
-    prompt: 'Я хочу капучино', instruction: 'Напиши по-итальянски',
-    answer: 'Voglio un cappuccino.', altAnswers: ['Vorrei un cappuccino.'],
-    explain: 'Voglio (хочу) прямо; vorrei (бы хотела) вежливее. В кафе чаще vorrei. Un — артикль м.р.' },
-  { id: 'c3', loc: 'caffe', speaker: 'marco', type: 'it_to_ru',
-    speakerSays: 'Hai fame?', instruction: 'Что спрашивает Marco?',
-    answer: 'Ты голодная? (букв. "у тебя голод?")',
-    explain: 'Hai = у тебя есть (avere), fame = голод. В итальянском "быть голодным" = "иметь голод". То же с жаждой: ho sete.' },
-  { id: 'c4', loc: 'caffe', speaker: 'marco', type: 'free',
-    speakerSays: 'Cosa ti piace fare?', instruction: 'Ответь свободно',
-    answer: 'Mi piace leggere. / Mi piace uscire con gli amici.',
-    explain: 'Mi piace + инфинитив = "мне нравится делать что-то". Примеры: leggere (читать), camminare (гулять), uscire (выходить).' },
-  { id: 'c5', loc: 'caffe', speaker: 'marco', type: 'ru_to_it',
-    prompt: 'Этот кофе мне нравится', instruction: 'Напиши по-итальянски',
-    answer: 'Mi piace questo caffè.',
-    explain: 'Piacere наоборот: "этот кофе нравится мне". Questo — этот (м.р.), caffè мужского рода.' },
-  { id: 'c6', loc: 'mercato', speaker: 'giulia', type: 'dialogue',
-    context: 'Giulia встречает тебя у прилавка',
-    speakerSays: 'Di dove sei? Non ti ho mai vista qui.',
-    instruction: 'Скажи, откуда ты',
-    answer: 'Sono della Russia.', altAnswers: ['Sono russa.'],
-    explain: 'Sono = я есть (essere). Della = di + la (Russia ж.р.). Sono russa = я русская (ж.р.).',
-    saves: 'origin' },
-  { id: 'c7', loc: 'mercato', speaker: 'giulia', type: 'it_to_ru',
-    speakerSays: 'Quanti ne vuoi?', instruction: 'Что спрашивает Giulia?',
-    answer: 'Сколько (из них) хочешь?',
-    explain: 'Quanti = сколько, ne = из них (партитивная частица), vuoi = ты хочешь (volere). Ответ: "ne voglio tre".' },
-  { id: 'c8', loc: 'mercato', speaker: 'giulia', type: 'ru_to_it',
-    prompt: 'У меня нет денег', instruction: 'Напиши по-итальянски',
-    answer: 'Non ho soldi.',
-    explain: 'В итальянском вместо "у меня есть" — avere. Ho = я имею, non ho = нет. Soldi всегда мн.ч.' },
-  { id: 'c9', loc: 'mercato', speaker: 'giulia', type: 'dialogue',
-    context: 'Ты выбрала три лимона', speakerSays: 'Sono tre euro.',
-    instruction: 'Поблагодари и попрощайся',
-    answer: 'Grazie, arrivederci!', altAnswers: ['Grazie mille, a presto!'],
-    explain: 'Grazie = спасибо, arrivederci = до свидания. A presto = до скорого. Mille = тысяча, в "grazie mille" значит "большое".' },
-  { id: 'c10', loc: 'mercato', speaker: 'giulia', type: 'free',
-    speakerSays: 'Cosa cucini stasera?', instruction: 'Ответь свободно',
-    answer: 'Voglio cucinare la pasta. / Faccio una zuppa.',
-    explain: 'Cucinare = готовить. Voglio cucinare = хочу готовить. Можно проще: Pasta! Stasera = сегодня вечером.' },
-  { id: 'c11', loc: 'casa', speaker: 'rossi', type: 'dialogue',
-    context: 'Соседка в лифте, очень разговорчивая',
-    speakerSays: 'Buongiorno cara! Come stai?',
-    instruction: 'Ответь вежливо',
-    answer: 'Bene, grazie. E Lei?', altAnswers: ['Sto bene, grazie.', 'Tutto bene, grazie.'],
-    explain: 'Bene = хорошо. С соседкой постарше — "Lei" (вежливо). E Lei? = А вы? На "ты" было бы E tu?' },
-  { id: 'c12', loc: 'casa', speaker: 'rossi', type: 'it_to_ru',
-    speakerSays: 'Esci stasera?', instruction: 'Что спрашивает соседка?',
-    answer: 'Ты выходишь сегодня вечером? (= идёшь куда-то?)',
-    explain: 'Esci = ты выходишь (uscire для tu). Uscire здесь "пойти куда-то, погулять". Stasera = сегодня вечером.' },
-  { id: 'c13', loc: 'casa', speaker: 'rossi', type: 'ru_to_it',
-    prompt: 'Эта квартира мне нравится', instruction: 'Напиши по-итальянски',
-    answer: 'Mi piace questo appartamento.',
-    explain: 'Questo — этот (м.р.), appartamento мужского рода (оканчивается на -o).' },
-  { id: 'c14', loc: 'casa', speaker: 'rossi', type: 'free',
-    speakerSays: 'Cosa fai di lavoro?', instruction: 'Ответь свободно',
-    answer: 'Faccio la designer. / Lavoro come programmatrice. / Studio.',
-    explain: 'Faccio = я делаю (fare). Faccio + артикль + профессия — стандарт. Lavoro come… = "работаю как…". Studio = учусь.' },
-  { id: 'c15', loc: 'casa', speaker: 'rossi', type: 'dialogue',
-    context: 'Rossi знает, что ты приехала недавно',
-    speakerSays: 'Hai bisogno di qualcosa?',
-    instruction: 'Скажи "нет, спасибо, всё хорошо"',
-    answer: 'No, grazie, tutto bene.', altAnswers: ['No, grazie, sto bene.'],
-    explain: 'Hai bisogno di… = "тебе нужно…" (букв. "имеешь нужду в…"). Полезная фраза. Ответ "tutto bene" = "всё хорошо".' }
+  { id:'c1', it:'Io sono russa e vivo a Helsinki.', itAlt:['Sono russa e vivo a Helsinki.'], ru:'Я русская и живу в Хельсинки.', ruAlt:['Я русская, живу в Хельсинки.'], topics:['essere','pronomi'] },
+  { id:'c2', it:'Tu hai due fratelli?', itAlt:['Hai due fratelli?'], ru:'У тебя два брата?', ruAlt:['Есть ли у тебя два брата?'], topics:['avere','numeri'] },
+  { id:'c3', it:'Lui non è italiano, è russo.', ru:'Он не итальянец, он русский.', topics:['essere','negazione'] },
+  { id:'c4', it:'Noi vogliamo un caffè e due cornetti.', ru:'Мы хотим один кофе и два круассана.', topics:['volere','numeri','articoli'] },
+  { id:'c5', it:'Lei esce con le amiche stasera.', ru:'Она выходит с подругами сегодня вечером.', topics:['uscire','pronomi'] },
+  { id:'c6', it:'Mi piace la pizza, ma non mi piacciono i funghi.', ru:'Мне нравится пицца, но мне не нравятся грибы.', topics:['piacere','negazione','genere'] },
+  { id:'c7', it:'Hai fame? Io ho molta fame.', ru:'Ты голоден? Я очень голоден.', ruAlt:['Ты голодная? Я очень голодная.'], topics:['avere'] },
+  { id:'c8', it:'Quanti anni hai?', ru:'Сколько тебе лет?', topics:['avere','domande'] },
+  { id:'c9', it:'Non sono stanco, sono solo triste.', ru:'Я не устал, я просто грустный.', ruAlt:['Я не уставший, мне просто грустно.'], topics:['essere','negazione'] },
+  { id:'c10', it:'Loro non vogliono uscire oggi.', ru:'Они не хотят выходить сегодня.', topics:['volere','negazione','pronomi'] },
+  { id:'c11', it:'Il caffè è buono, ma la pizza è migliore.', ru:'Кофе хороший, но пицца лучше.', topics:['essere','genere','articoli'] },
+  { id:'c12', it:'Quante sorelle hai?', ru:'Сколько у тебя сестёр?', topics:['avere','domande','numeri'] },
+  { id:'c13', it:'Voglio una casa grande con un giardino.', ru:'Я хочу большой дом с садом.', topics:['volere','articoli','genere'] },
+  { id:'c14', it:'Lei ha due gatti e un cane.', ru:'У неё две кошки и одна собака.', topics:['avere','numeri','genere'] },
+  { id:'c15', it:'Chi sei tu?', ru:'Кто ты?', topics:['essere','domande','pronomi'] },
+  { id:'c16', it:'Non abbiamo tempo oggi.', ru:'У нас нет времени сегодня.', topics:['avere','negazione','pronomi'] },
+  { id:'c17', it:'Esci con noi stasera?', ru:'Ты выйдешь с нами сегодня вечером?', topics:['uscire','pronomi','domande'] },
+  { id:'c18', it:'A loro non piace il caffè freddo.', ru:'Им не нравится холодный кофе.', topics:['piacere','negazione','pronomi'] },
+  { id:'c19', it:'Sono le tre e mezza.', ru:'Сейчас половина четвёртого.', ruAlt:['Сейчас три тридцать.'], topics:['essere','numeri'] },
+  { id:'c20', it:'Dove vuoi andare stasera?', ru:'Куда ты хочешь пойти сегодня вечером?', topics:['volere','domande'] },
+  { id:'c21', it:'Io ho fretta, non ho tempo per parlare.', ru:'Я тороплюсь, у меня нет времени разговаривать.', topics:['avere','negazione'] },
+  { id:'c22', it:'Le ragazze sono italiane, i ragazzi sono russi.', ru:'Девушки итальянки, парни русские.', topics:['essere','genere','numeri'] },
+  { id:'c23', it:'Perché non vuoi uscire con me?', ru:'Почему ты не хочешь выходить со мной?', topics:['volere','negazione','domande'] },
+  { id:'c24', it:'Mi piacciono molto i libri italiani.', ru:'Мне очень нравятся итальянские книги.', topics:['piacere','genere'] },
+  { id:'c25', it:'Quanti anni ha tua sorella?', ru:'Сколько лет твоей сестре?', topics:['avere','domande'] },
+  { id:'c26', it:'Non sono di Roma, sono di Helsinki.', ru:'Я не из Рима, я из Хельсинки.', topics:['essere','negazione'] },
+  { id:'c27', it:'Vogliamo due camere, non una.', ru:'Мы хотим два номера, не один.', topics:['volere','numeri','negazione'] },
+  { id:'c28', it:'Esco sempre la sera con gli amici.', ru:'Я всегда выхожу вечером с друзьями.', topics:['uscire'] },
+  { id:'c29', it:'Hai un fratello o una sorella?', ru:'У тебя есть брат или сестра?', topics:['avere','domande','genere'] },
+  { id:'c30', it:'A me piace il tè, a lui piace il caffè.', ru:'Мне нравится чай, ему нравится кофе.', topics:['piacere','pronomi'] },
+  { id:'c31', it:'Chi è quella donna? È mia madre.', ru:'Кто эта женщина? Это моя мама.', topics:['essere','domande','genere'] },
+  { id:'c32', it:'Non abbiamo un appartamento, abbiamo una casa.', ru:'У нас нет квартиры, у нас есть дом.', topics:['avere','negazione','genere'] },
+  { id:'c33', it:'Quanto costa? Non lo so.', ru:'Сколько это стоит? Я не знаю.', topics:['domande','negazione'] },
+  { id:'c34', it:'Voglio imparare l\'italiano, non il francese.', ru:'Я хочу учить итальянский, а не французский.', topics:['volere','negazione','articoli'] },
+  { id:'c35', it:'Le piace molto Helsinki?', ru:'Ей очень нравится Хельсинки?', topics:['piacere','domande','pronomi'] },
+
+  // ---- andare / venire ----
+  { id:'c36', it:'Vado a lavorare ogni mattina alle otto.', ru:'Я иду на работу каждое утро в восемь.', topics:['andare','tempo'] },
+  { id:'c37', it:'Andiamo in Francia o veniamo in Italia?', ru:'Мы едем во Францию или приезжаем в Италию?', topics:['andare','venire'] },
+  { id:'c38', it:'Da dove vieni? Vengo da San Pietroburgo.', ru:'Откуда ты? Я из Санкт-Петербурга.', topics:['venire','domande'] },
+  { id:'c39', it:'Voi andate da Lina stasera?', ru:'Вы идёте к Лине сегодня вечером?', topics:['andare','domande'] },
+  { id:'c40', it:'Vado al cinema in autobus, non a piedi.', ru:'Я еду в кино на автобусе, не пешком.', topics:['andare','negazione'] },
+  { id:'c41', it:'I miei amici vanno al mare, io non vado.', ru:'Мои друзья едут на море, я не еду.', topics:['andare','negazione','pronomi'] },
+  { id:'c42', it:'A che ora viene Giovanni domani?', ru:'Во сколько придёт Джованни завтра?', topics:['venire','domande','tempo'] },
+  { id:'c43', it:'Domani andiamo a Roma in treno.', ru:'Завтра мы едем в Рим на поезде.', topics:['andare','tempo'] },
+  { id:'c44', it:'Il sabato non vado a lavorare.', ru:'По субботам я не хожу на работу.', topics:['andare','negazione','tempo'] },
+  { id:'c45', it:'A casa nostra stasera vengono alcuni ospiti.', ru:'К нам домой сегодня вечером придут гости.', topics:['venire','tempo'] },
+  { id:'c46', it:'Ragazzi, dove andate?', ru:'Ребята, куда вы идёте?', topics:['andare','domande'] },
+  { id:'c47', it:'Mio padre va in ufficio in macchina.', ru:'Мой отец едет в офис на машине.', topics:['andare','genere'] },
+  { id:'c48', it:'Vengo da te fra un\'ora.', ru:'Я приду к тебе через час.', topics:['venire','tempo'] },
+
+  // ---- fare / stare ----
+  { id:'c49', it:'Che cosa fai nel tempo libero?', ru:'Что ты делаешь в свободное время?', topics:['fare','domande'] },
+  { id:'c50', it:'Di solito faccio sport e gioco a tennis.', ru:'Обычно я занимаюсь спортом и играю в теннис.', topics:['fare','avverbi_frequenza'] },
+  { id:'c51', it:'Io sto quasi sempre a casa la sera.', ru:'Я почти всегда дома по вечерам.', topics:['stare','avverbi_frequenza'] },
+  { id:'c52', it:'Non sono brava come te, sto sempre a casa.', ru:'Я не такая хорошая, как ты, я всегда дома.', topics:['stare','negazione','essere'] },
+  { id:'c53', it:'Faccio ginnastica e poi vado in bicicletta.', ru:'Я делаю гимнастику, а потом катаюсь на велосипеде.', topics:['fare','andare'] },
+  { id:'c54', it:'Come stai oggi?', ru:'Как ты сегодня?', topics:['stare','domande'] },
+  { id:'c55', it:'I bambini fanno i compiti ogni giorno.', ru:'Дети делают домашнее задание каждый день.', topics:['fare','avverbi_frequenza'] },
+
+  // ---- avere idioms ----
+  { id:'c56', it:'Ho fame e ho anche sete.', ru:'Я голоден и ещё хочу пить.', topics:['avere'] },
+  { id:'c57', it:'Quando viaggio, ho sempre un po\' di paura.', ru:'Когда путешествую, мне всегда немного страшно.', topics:['avere','avverbi_frequenza'] },
+  { id:'c58', it:'Ho sonno, voglio dormire.', ru:'Я хочу спать, я хочу спать.', ruAlt:['Мне хочется спать, я хочу спать.'], topics:['avere','volere'] },
+  { id:'c59', it:'Il treno parte tra due minuti, ho fretta!', ru:'Поезд отправляется через две минуты, я спешу!', topics:['avere','tempo'] },
+  { id:'c60', it:'Ho bisogno di studiare prima dell\'esame.', ru:'Мне нужно учиться перед экзаменом.', topics:['avere'] },
+  { id:'c61', it:'D\'estate ho sempre caldo, d\'inverno ho freddo.', ru:'Летом мне всегда жарко, зимой холодно.', topics:['avere','avverbi_frequenza'] },
+  { id:'c62', it:'Quanti anni hai? Ho venticinque anni.', ru:'Сколько тебе лет? Мне двадцать пять лет.', topics:['avere','domande','numeri'] },
+  { id:'c63', it:'Non abbiamo fretta, abbiamo tempo.', ru:'Мы не спешим, у нас есть время.', topics:['avere','negazione'] },
+
+  // ---- c'è / ci sono ----
+  { id:'c64', it:'C\'è un libro sul tavolo.', ru:'На столе есть книга.', topics:['ce'] },
+  { id:'c65', it:'Ci sono molti turisti a Firenze.', ru:'Во Флоренции много туристов.', topics:['ce'] },
+  { id:'c66', it:'In centro non c\'è lo sciopero oggi.', ru:'В центре сегодня нет забастовки.', topics:['ce','negazione'] },
+  { id:'c67', it:'Quante persone ci sono in casa?', ru:'Сколько человек дома?', topics:['ce','domande','numeri'] },
+  { id:'c68', it:'A Bologna c\'è una bella università.', ru:'В Болонье красивый университет.', topics:['ce'] },
+
+  // ---- articoli ----
+  { id:'c69', it:'Lo studente legge un libro interessante.', ru:'Студент читает интересную книгу.', topics:['articoli','genere'] },
+  { id:'c70', it:'Gli amici vanno al cinema insieme.', ru:'Друзья идут в кино вместе.', topics:['articoli','andare'] },
+  { id:'c71', it:'L\'amica di Marco ha una macchina nuova.', ru:'Подруга Марко имеет новую машину.', ruAlt:['У подруги Марко новая машина.'], topics:['articoli','avere','genere'] },
+  { id:'c72', it:'Lo zaino è pesante, le chiavi sono leggere.', ru:'Рюкзак тяжёлый, ключи лёгкие.', topics:['articoli','essere','genere'] },
+
+  // ---- domande (question words) ----
+  { id:'c73', it:'Che lingue parli?', ru:'На каких языках ты говоришь?', topics:['domande'] },
+  { id:'c74', it:'Che cosa hai comprato oggi?', ru:'Что ты купил сегодня?', topics:['domande','tempo'] },
+  { id:'c75', it:'Chi ti ha chiamato stamattina?', ru:'Кто тебе звонил сегодня утром?', topics:['domande','tempo'] },
+  { id:'c76', it:'Quanto costa questa gonna?', ru:'Сколько стоит эта юбка?', topics:['domande'] },
+  { id:'c77', it:'Quali libri vuoi leggere?', ru:'Какие книги ты хочешь почитать?', topics:['domande','volere'] },
+  { id:'c78', it:'Com\'è la giornata oggi?', ru:'Какой сегодня день?', topics:['domande','tempo'] },
+  { id:'c79', it:'Di dove sei? Sono di Mosca.', ru:'Откуда ты родом? Я из Москвы.', topics:['domande','essere'] },
+
+  // ---- avverbi di frequenza ----
+  { id:'c80', it:'La sera usciamo spesso con gli amici.', ru:'Вечером мы часто выходим с друзьями.', topics:['avverbi_frequenza','uscire'] },
+  { id:'c81', it:'Non vado mai al mercato la domenica.', ru:'Я никогда не хожу на рынок по воскресеньям.', topics:['avverbi_frequenza','negazione','andare'] },
+  { id:'c82', it:'Qualche volta cucino la pasta italiana.', ru:'Иногда я готовлю итальянскую пасту.', topics:['avverbi_frequenza'] },
+  { id:'c83', it:'Raramente ho tempo libero durante la settimana.', ru:'У меня редко есть свободное время в течение недели.', topics:['avverbi_frequenza','avere'] },
+  { id:'c84', it:'Di solito faccio la spesa il sabato mattina.', ru:'Обычно я хожу за покупками в субботу утром.', topics:['avverbi_frequenza','fare','tempo'] },
+
+  // ---- numeri / tempo / giorni ----
+  { id:'c85', it:'Sono le sette e venti di mattina.', ru:'Сейчас семь двадцать утра.', topics:['numeri','tempo'] },
+  { id:'c86', it:'Mercoledì pomeriggio ho lezione di italiano.', ru:'В среду днём у меня урок итальянского.', topics:['tempo'] },
+  { id:'c87', it:'Martedì pomeriggio andiamo in piscina.', ru:'Во вторник днём мы идём в бассейн.', topics:['tempo','andare'] },
+  { id:'c88', it:'Sabato sera vado al cinema con gli amici.', ru:'В субботу вечером я иду в кино с друзьями.', topics:['tempo','andare'] },
+  { id:'c89', it:'Ho trentacinque anni, non venticinque.', ru:'Мне тридцать пять лет, а не двадцать пять.', topics:['avere','numeri','negazione'] },
+
+  // ---- professioni / lavoro ----
+  { id:'c90', it:'Che lavoro fai? Faccio l\'insegnante.', ru:'Кем ты работаешь? Я работаю учителем.', topics:['fare','domande','professioni'] },
+  { id:'c91', it:'Dove lavori? Lavoro in un ospedale.', ru:'Где ты работаешь? Я работаю в больнице.', topics:['domande','professioni'] },
+  { id:'c92', it:'Sono in Italia per lavoro, non per turismo.', ru:'Я в Италии по работе, не для туризма.', topics:['essere','negazione','professioni'] },
+  { id:'c93', it:'Lei è medico, lui è ingegnere.', ru:'Она врач, он инженер.', topics:['essere','professioni','genere'] },
+
+  // ---- tempo libero ----
+  { id:'c94', it:'Nel tempo libero leggo libri e ascolto musica.', ru:'В свободное время я читаю книги и слушаю музыку.', topics:['tempo_libero'] },
+  { id:'c95', it:'Suono il pianoforte e gioco a calcio.', ru:'Я играю на пианино и играю в футбол.', topics:['tempo_libero'] },
+  { id:'c96', it:'Mi piace fare una passeggiata la sera.', ru:'Мне нравится гулять по вечерам.', topics:['piacere','tempo_libero'] },
+  { id:'c97', it:'Studio l\'italiano da sei mesi.', ru:'Я учу итальянский шесть месяцев.', topics:['tempo'] },
+  { id:'c98', it:'Vorrei imparare a suonare la chitarra.', ru:'Я хотел бы научиться играть на гитаре.', ruAlt:['Я хотела бы научиться играть на гитаре.'], topics:['volere','tempo_libero'] },
+
+  // ---- mixed review ----
+  { id:'c99', it:'Quando ho tempo libero, vado in bicicletta o leggo.', ru:'Когда у меня есть свободное время, я катаюсь на велосипеде или читаю.', topics:['avere','andare','tempo_libero'] },
+  { id:'c100', it:'Non sono di Roma, vengo da Helsinki.', ru:'Я не из Рима, я приехала из Хельсинки.', ruAlt:['Я не из Рима, я приехал из Хельсинки.'], topics:['essere','venire','negazione'] },
+  { id:'c101', it:'Di solito non ho fretta la mattina presto.', ru:'Обычно я не спешу рано утром.', topics:['avverbi_frequenza','avere','negazione'] },
+  { id:'c102', it:'C\'è qualcuno in cucina? Sì, c\'è mia madre.', ru:'Кто-то есть на кухне? Да, там моя мама.', topics:['ce','genere'] },
 ];
 
-const BOSSES = [
-  {
-    id: 'boss_caffe_1', locId: 'caffe', speaker: 'marco',
-    title: 'Primo incontro vero', titleRu: 'Первый настоящий разговор',
-    description: 'Marco не просто бариста — после нескольких визитов он приглашает тебя сесть и поболтать. Это твой первый настоящий итальянский диалог.',
-    postcard: { emoji: '☕', title: 'Caffè con Marco', phrase: 'Vorrei un cappuccino, grazie.' },
-    replies: [
-      { says: 'Buongiorno! Vuoi sederti qui con me?',
-        instruction: 'Согласись сесть с ним',
-        requiredAny: [['sì', 'si', 'certo', 'volentieri']], requiredAll: [],
-        model: 'Sì, volentieri!',
-        reactionOk: 'Marco sorride: "Bene!"',
-        reactionFail: 'Marco esita: "Ah... preferisci di no? Va bene."' },
-      { says: 'Cosa prendi? Offro io.',
-        instruction: 'Закажи капучино',
-        requiredAny: [['voglio', 'vorrei', 'prendo']], requiredAll: ['cappuccino'],
-        model: 'Vorrei un cappuccino, grazie.',
-        reactionOk: 'Marco: "Un cappuccino, perfetto!"',
-        reactionFail: 'Marco confuso: "Eh? Cosa hai detto?"' },
-      { says: 'Allora, di dove sei?',
-        instruction: 'Скажи, откуда ты',
-        requiredAny: [['sono', 'vengo']], requiredAll: [],
-        model: 'Sono della Russia.',
-        reactionOk: 'Marco: "Ah, interessante!"',
-        reactionFail: 'Marco: "Scusa, non ho capito..."' },
-      { says: 'E ti piace stare qui in Italia?',
-        instruction: 'Скажи, нравится тебе или нет',
-        requiredAny: [['piace', 'piacciono']], requiredAll: [],
-        model: 'Sì, mi piace molto!',
-        reactionOk: 'Marco: "Sono contento!"',
-        reactionFail: 'Marco: "Mmm, non ho capito bene..."' },
-      { says: 'Cosa fai di lavoro?',
-        instruction: 'Расскажи о работе или учёбе',
-        requiredAny: [['faccio', 'lavoro', 'studio', 'sono']], requiredAll: [],
-        model: 'Faccio la designer. / Sono studentessa.',
-        reactionOk: 'Marco annuisce: "Interessante!"',
-        reactionFail: 'Marco: "Scusa?"' },
-      { says: 'Bello! Vuoi uscire con me sabato sera?',
-        instruction: 'Прими приглашение (или вежливо откажись)',
-        requiredAny: [['sì', 'si', 'volentieri', 'no', 'grazie']], requiredAll: [],
-        model: 'Sì, volentieri!',
-        reactionOk: 'Marco sorride: "A sabato allora!"',
-        reactionFail: 'Marco: "Va bene, un\'altra volta forse."' }
-    ]
-  },
-  {
-    id: 'boss_mercato_1', locId: 'mercato', speaker: 'giulia',
-    title: 'La spesa del sabato', titleRu: 'Субботние закупки',
-    description: 'Ты идёшь на рынок за продуктами на ужин. Giulia встречает тебя как родную — нужно сделать заказ, узнать цены, попрощаться.',
-    postcard: { emoji: '🍋', title: 'Mercato con Giulia', phrase: 'Vorrei un chilo di pomodori, per favore.' },
-    replies: [
-      { says: 'Buongiorno cara! Cosa cucini oggi?',
-        instruction: 'Скажи, что хочешь приготовить (что угодно)',
-        requiredAny: [['voglio', 'faccio', 'cucino']], requiredAll: [],
-        model: 'Voglio fare la pasta.',
-        reactionOk: 'Giulia: "Ottima scelta!"',
-        reactionFail: 'Giulia: "Eh? Non ho capito cosa cucini..."' },
-      { says: 'Hai bisogno di pomodori? Sono freschi!',
-        instruction: 'Согласись — попроси килограмм',
-        requiredAny: [['sì', 'si', 'vorrei', 'voglio', 'prendo']], requiredAll: [],
-        model: 'Sì, vorrei un chilo.',
-        reactionOk: 'Giulia: "Subito!"',
-        reactionFail: 'Giulia: "Allora, li vuoi o no?"' },
-      { says: 'E i limoni? Ti piacciono?',
-        instruction: 'Скажи, что нравятся или нет',
-        requiredAny: [['piacciono', 'piace', 'sì', 'si', 'no']], requiredAll: [],
-        model: 'Sì, mi piacciono!',
-        reactionOk: 'Giulia: "Ottimi anche quelli!"',
-        reactionFail: 'Giulia: "Hmm, allora?"' },
-      { says: 'Vuoi anche del formaggio?',
-        instruction: 'Скажи "нет, спасибо"',
-        requiredAny: [['no', 'sì', 'si']], requiredAll: ['grazie'],
-        model: 'No, grazie.',
-        reactionOk: 'Giulia: "Va bene!"',
-        reactionFail: 'Giulia ti guarda: "Allora?"' },
-      { says: 'Allora sono cinque euro in tutto.',
-        instruction: 'Скажи "вот, пожалуйста" или согласись',
-        requiredAny: [['ecco', 'va', 'prego', 'grazie']], requiredAll: [],
-        model: 'Ecco a Lei.',
-        reactionOk: 'Giulia: "Grazie cara!"',
-        reactionFail: 'Giulia aspetta...' },
-      { says: 'Grazie cara, a presto!',
-        instruction: 'Попрощайся',
-        requiredAny: [['grazie', 'arrivederci', 'presto', 'ciao']], requiredAll: [],
-        model: 'Grazie, a presto!',
-        reactionOk: 'Giulia ti saluta con la mano.',
-        reactionFail: 'Giulia: "Eh?"' }
-    ]
-  },
-  {
-    id: 'boss_casa_1', locId: 'casa', speaker: 'rossi',
-    title: 'L\'invito al caffè', titleRu: 'Приглашение на кофе',
-    description: 'Соседка Sig.ra Rossi приглашает тебя на чашку кофе. Она хочет узнать тебя получше — приготовься к разговору о жизни.',
-    postcard: { emoji: '🏠', title: 'Caffè con la signora Rossi', phrase: 'Mi piace molto l\'Italia.' },
-    replies: [
-      { says: 'Cara, vuoi entrare a prendere un caffè?',
-        instruction: 'Согласись вежливо',
-        requiredAny: [['sì', 'si', 'volentieri', 'grazie', 'certo']], requiredAll: [],
-        model: 'Sì, grazie!',
-        reactionOk: 'Sig.ra Rossi: "Entra, entra!"',
-        reactionFail: 'Sig.ra Rossi: "Mah, come vuoi..."' },
-      { says: 'Da quanto tempo abiti qui?',
-        instruction: 'Скажи, сколько времени ты тут (примерно)',
-        requiredAny: [['da', 'abito', 'sono', 'mesi', 'mese', 'anno', 'poco']], requiredAll: [],
-        model: 'Da tre mesi.',
-        reactionOk: 'Sig.ra Rossi: "Ah, da poco!"',
-        reactionFail: 'Sig.ra Rossi: "Non ho capito..."' },
-      { says: 'Ti piace l\'Italia?',
-        instruction: 'Скажи, нравится ли тебе',
-        requiredAny: [['piace', 'piacciono', 'sì', 'si']], requiredAll: [],
-        model: 'Sì, mi piace molto!',
-        reactionOk: 'Sig.ra Rossi sorride: "Brava!"',
-        reactionFail: 'Sig.ra Rossi: "Ma davvero?"' },
-      { says: 'E la cucina italiana? Cosa ti piace mangiare?',
-        instruction: 'Скажи, что ты любишь есть',
-        requiredAny: [['piace', 'piacciono', 'mi']], requiredAll: [],
-        model: 'Mi piace la pasta.',
-        reactionOk: 'Sig.ra Rossi: "Ottimo!"',
-        reactionFail: 'Sig.ra Rossi: "Eh?"' },
-      { says: 'Esci spesso la sera?',
-        instruction: 'Скажи "да, выхожу" или "нет"',
-        requiredAny: [['esco', 'no', 'sì', 'si']], requiredAll: [],
-        model: 'Sì, esco spesso.',
-        reactionOk: 'Sig.ra Rossi annuisce.',
-        reactionFail: 'Sig.ra Rossi: "Non ho capito..."' },
-      { says: 'Bene cara! Torna a trovarmi quando vuoi!',
-        instruction: 'Поблагодари и попрощайся',
-        requiredAny: [['grazie', 'arrivederci', 'presto', 'ciao']], requiredAll: [],
-        model: 'Grazie, a presto!',
-        reactionOk: 'Sig.ra Rossi: "Ciao cara!"',
-        reactionFail: 'Sig.ra Rossi: "Eh?"' }
-    ]
-  }
-];
+const NEW_PER_DAY = 15;
+const STORAGE_KEY = 'italiano_v3';
 
-let state = {
-  cards: {}, bosses: {}, xp: 0, streak: 0, lastStudyDay: null,
-  todayCount: 0, todayXP: 0, todayDay: null,
-  profile: {}, diary: [], diaryToday: null, cartoline: []
-};
+let state = load();
+let queue = [];
+let qi = 0;
+let currentDir = 'it2ru';
+let answered = false;
+let activeTab = 'study';
 
-const NEW_PER_DAY = 20;
-const BOSS_UNLOCK_THRESHOLD = 0.6;
-const BOSS_PASS_THRESHOLD = 0.8;
+function defaultState() {
+  return {
+    cards: {},     // id -> {ease, interval, due, reps, lapses}
+    streak: 0, lastStudyDay: null,
+    todayCount: 0, todayDay: null,
+    diary: []
+  };
+}
 
 function load() {
-  try { const s = localStorage.getItem('italiano_v2'); if (s) state = { ...state, ...JSON.parse(s) }; } catch(e) {}
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return defaultState();
+    const parsed = JSON.parse(raw);
+    return Object.assign(defaultState(), parsed);
+  } catch (e) { return defaultState(); }
 }
-function save() { localStorage.setItem('italiano_v2', JSON.stringify(state)); }
+function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
 
-function ankiDay(ts = Date.now()) {
-  const d = new Date(ts);
-  if (d.getHours() < 4) d.setDate(d.getDate() - 1);
-  return d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
-}
-function nextAnkiDayStart(daysFromNow = 1) {
-  const d = new Date(); d.setDate(d.getDate() + daysFromNow); d.setHours(4, 0, 0, 0);
-  return d.getTime();
-}
-
-function applyRating(card, q) {
-  if (!card.ef) card.ef = 2.5;
-  if (!card.reps) card.reps = 0;
-  if (!card.interval) card.interval = 0;
-  if (q === 1) {
-    card.reps = 0; card.interval = 0;
-    card.ef = Math.max(1.3, card.ef - 0.2);
-    card.due = Date.now() + 10 * 60 * 1000;
-  } else if (q === 2) {
-    card.interval = card.reps === 0 ? 1 : Math.max(1, Math.round(card.interval * 1.2));
-    card.reps += 1; card.ef = Math.max(1.3, card.ef - 0.15);
-    card.due = nextAnkiDayStart(card.interval);
-  } else if (q === 3) {
-    if (card.reps === 0) card.interval = 1;
-    else if (card.reps === 1) card.interval = 3;
-    else card.interval = Math.round(card.interval * card.ef);
-    card.reps += 1; card.due = nextAnkiDayStart(card.interval);
-  } else if (q === 4) {
-    card.interval = card.reps === 0 ? 4 : Math.round(card.interval * card.ef * 1.3);
-    card.reps += 1; card.ef = Math.min(3.0, card.ef + 0.15);
-    card.due = nextAnkiDayStart(card.interval);
-  }
-  return card;
+// day rollover at 4am
+function ankiDay() {
+  const d = new Date();
+  d.setHours(d.getHours() - 4);
+  return d.toISOString().slice(0,10);
 }
 
-function previewInterval(card, q) {
-  const copy = { ...card }; applyRating(copy, q);
-  if (q === 1) return '< 10 min';
-  const days = copy.interval;
-  if (days < 1) return '< 1 giorno';
-  if (days === 1) return '1 giorno';
-  if (days < 30) return days + ' gg';
-  if (days < 365) return Math.round(days / 30) + ' mesi';
-  return Math.round(days / 365) + ' anni';
-}
-
-// ============== TYPO TOLERANCE ==============
-function levenshtein(a, b) {
-  if (a === b) return 0;
-  if (!a.length) return b.length;
-  if (!b.length) return a.length;
-  const m = [];
-  for (let i = 0; i <= b.length; i++) m[i] = [i];
-  for (let j = 0; j <= a.length; j++) m[0][j] = j;
-  for (let i = 1; i <= b.length; i++) {
-    for (let j = 1; j <= a.length; j++) {
-      m[i][j] = b[i-1] === a[j-1] ? m[i-1][j-1]
-        : Math.min(m[i-1][j-1] + 1, m[i][j-1] + 1, m[i-1][j] + 1);
-    }
-  }
-  return m[b.length][a.length];
-}
-
-function normalize(text) {
-  return text.toLowerCase()
-    .replace(/[.,!?;:'"()\-\u2019\u00e0\u00e1]/g, (m) => {
-      // keep accented chars by mapping common ones
-      const map = { '\u00e0':'a','\u00e1':'a','\u00e8':'e','\u00e9':'e','\u00ec':'i','\u00ed':'i','\u00f2':'o','\u00f3':'o','\u00f9':'u','\u00fa':'u' };
-      return map[m] !== undefined ? map[m] : ' ';
-    })
-    .replace(/[\u00e8\u00e9\u00ec\u00ed\u00f2\u00f3\u00f9\u00fa]/g, (m) => {
-      const map = { '\u00e8':'e','\u00e9':'e','\u00ec':'i','\u00ed':'i','\u00f2':'o','\u00f3':'o','\u00f9':'u','\u00fa':'u' };
-      return map[m] || m;
-    })
-    .replace(/\s+/g, ' ').trim();
-}
-
-function hasWord(words, target) {
-  const t = normalize(target).replace(/\s/g, '');
-  for (const w of words) {
-    if (w === t) return true;
-    if (t.length <= 3) continue;
-    if (t.length >= 4 && Math.abs(w.length - t.length) <= 2) {
-      const tol = t.length >= 6 ? 2 : 1;
-      if (levenshtein(w, t) <= tol) return true;
-    }
-  }
-  return false;
-}
-
-function checkBossReply(userText, reply) {
-  const text = normalize(userText);
-  if (!text) return false;
-  const words = text.split(' ');
-  for (const w of (reply.requiredAll || [])) {
-    if (!hasWord(words, w)) return false;
-  }
-  for (const group of (reply.requiredAny || [])) {
-    if (group.length === 0) continue;
-    let found = false;
-    for (const opt of group) {
-      if (hasWord(words, opt)) { found = true; break; }
-    }
-    if (!found) return false;
-  }
-  return true;
-}
-
-function getDueCards(locFilter) {
-  const now = Date.now();
-  const due = [], newCards = [];
-  const pool = locFilter ? CARDS.filter(c => c.loc === locFilter) : CARDS;
-  for (const tpl of pool) {
-    const c = state.cards[tpl.id];
-    if (!c) newCards.push(tpl);
-    else if ((c.due || 0) <= now) due.push(tpl);
-  }
-  const shuffled = [...due].sort(() => Math.random() - 0.5);
-  const newLimit = locFilter ? newCards.length : NEW_PER_DAY;
-  const newShuffled = [...newCards].sort(() => Math.random() - 0.5).slice(0, newLimit);
-  return [...shuffled, ...newShuffled];
-}
-
-function locProgress(locId) {
-  const pool = CARDS.filter(c => c.loc === locId);
-  let young = 0, mature = 0;
-  for (const c of pool) {
-    const s = state.cards[c.id];
-    if (s && s.interval >= 21) mature++;
-    if (s && s.interval >= 1) young++;
-  }
-  return { young, mature, total: pool.length };
-}
-
-function locDue(locId) {
-  const now = Date.now();
-  let due = 0;
-  for (const c of CARDS.filter(x => x.loc === locId)) {
-    const s = state.cards[c.id];
-    if (!s) due++;
-    else if ((s.due || 0) <= now) due++;
-  }
-  return due;
-}
-
-function bossStatus(boss) {
-  const p = locProgress(boss.locId);
-  const ratio = p.total > 0 ? p.young / p.total : 0;
-  const s = state.bosses[boss.id];
-  const now = Date.now();
-  if (!s) return ratio >= BOSS_UNLOCK_THRESHOLD ? 'ready' : 'locked';
-  if ((s.due || 0) <= now) return 'due';
-  return 'mature';
-}
-
-function updateStreakOnStudy() {
+function ensureDay() {
   const today = ankiDay();
   if (state.todayDay !== today) {
-    state.todayCount = 0; state.todayXP = 0; state.todayDay = today;
+    if (state.todayDay) {
+      const prev = new Date(state.todayDay);
+      const cur = new Date(today);
+      const diffDays = Math.round((cur - prev) / 86400000);
+      if (diffDays === 1 && state.todayCount > 0) state.streak += 1;
+      else if (diffDays !== 0) state.streak = (state.todayCount > 0) ? 1 : 0;
+    }
+    state.todayCount = 0;
+    state.todayDay = today;
+    save();
   }
-  if (state.lastStudyDay !== today) {
-    const yesterday = ankiDay(Date.now() - 24 * 3600 * 1000);
-    if (state.lastStudyDay === yesterday) state.streak += 1;
-    else state.streak = 1;
-    state.lastStudyDay = today;
+}
+
+function cardState(id) {
+  if (!state.cards[id]) {
+    state.cards[id] = { ease: 2.3, interval: 0, due: ankiDay(), reps: 0, lapses: 0, seen: false };
   }
+  return state.cards[id];
 }
 
-function showView(name) {
-  ['mapView','cardView','bossIntroView','bossSceneView','bossResultView','diaryView','cartolineView','doneScreen']
-    .forEach(v => {
-      const el = document.getElementById(v);
-      if (v === name) {
-        el.classList.remove('view-hidden');
-        if (v === 'doneScreen') el.classList.add('visible');
-      } else {
-        el.classList.add('view-hidden');
-        if (v === 'doneScreen') el.classList.remove('visible');
-      }
-    });
-}
-
-function renderGreeting() {
-  const h = new Date().getHours();
-  let g;
-  if (h < 12) g = 'Buongiorno! Iniziamo?';
-  else if (h < 18) g = 'Buon pomeriggio! Una pausa?';
-  else g = 'Buonasera! Com\'è andata?';
-  document.getElementById('greeting').textContent = g;
-}
-
-function renderHeader() {
-  const lv = 1 + Math.floor(state.xp / 50);
-  document.getElementById('hLevel').textContent = lv;
-  document.getElementById('hXP').textContent = state.xp;
-  document.getElementById('hStreak').textContent = state.streak;
-}
-
-function renderMap() {
-  renderGreeting();
-  renderHeader();
-  const due = getDueCards();
-  const btn = document.getElementById('mainAction');
-  const count = document.getElementById('maCount');
-  if (due.length === 0) {
-    btn.classList.add('disabled'); btn.disabled = true;
-    document.getElementById('maTitle').textContent = 'Niente per oggi';
-    document.getElementById('maSub').textContent = 'Очередь пуста — возвращайся завтра';
-    count.textContent = '0';
+// SM-2-ish, quality auto-derived from correctness (no self-rating)
+function gradeCard(id, quality) {
+  const c = cardState(id);
+  c.seen = true;
+  if (quality < 3) {
+    c.lapses += 1;
+    c.interval = 0;
+    c.reps = 0;
+    c.due = ankiDay();
   } else {
-    btn.classList.remove('disabled'); btn.disabled = false;
-    document.getElementById('maTitle').textContent = 'Coda di oggi';
-    document.getElementById('maSub').textContent = 'Все локации, перемешано';
-    count.textContent = due.length;
+    c.reps += 1;
+    if (c.reps === 1) c.interval = 1;
+    else if (c.reps === 2) c.interval = 3;
+    else c.interval = Math.round(c.interval * c.ease);
+    c.ease = Math.max(1.3, c.ease + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02)));
+    const d = new Date();
+    d.setDate(d.getDate() + c.interval);
+    c.due = d.toISOString().slice(0,10);
   }
+  save();
+}
 
-  const list = document.getElementById('mapList');
-  list.innerHTML = '';
-  LOCATIONS.forEach(loc => {
-    const p = locProgress(loc.id);
-    const d = locDue(loc.id);
-    const row = document.createElement('div');
-    row.className = 'loc-row';
-    row.onclick = () => startLocationMode(loc.id);
-    row.innerHTML = `
-      <div class="loc-emoji">${loc.emoji}</div>
-      <div class="loc-info">
-        <div class="loc-name">${loc.name}</div>
-        <div class="loc-character">${loc.character.emoji} ${loc.character.name}, ${loc.character.role}</div>
-      </div>
-      <div class="loc-progress">
-        <div class="loc-progress-num">${p.young} / ${p.total}</div>
-        <div class="loc-progress-lbl">${d > 0 ? d + ' к повтору' : 'всё свежо'}</div>
-      </div>`;
-    list.appendChild(row);
-  });
-
-  const bossSection = document.getElementById('bossSection');
-  bossSection.innerHTML = '';
-  const availableBosses = BOSSES.filter(b => {
-    const st = bossStatus(b);
-    return st === 'ready' || st === 'due';
-  });
-
-  if (availableBosses.length > 0) {
-    bossSection.innerHTML = `<div class="section-label">Incontri speciali</div>`;
-    availableBosses.forEach(b => {
-      const loc = LOCATIONS.find(l => l.id === b.locId);
-      const st = bossStatus(b);
-      const saved = state.bosses[b.id];
-      const stars = saved ? (saved.bestStars || 0) : 0;
-      const starsStr = stars > 0 ? '★'.repeat(stars) + '☆'.repeat(3 - stars) : '';
-      const row = document.createElement('div');
-      row.className = 'boss-row' + (st === 'due' ? ' due' : '');
-      row.onclick = () => openBossIntro(b);
-      row.innerHTML = `
-        <div class="boss-emoji">🎭</div>
-        <div class="boss-info">
-          <div class="boss-title">${b.title}</div>
-          <div class="boss-sub">${loc.character.name} · ${st === 'due' ? 'è ora di ripetere' : 'è pronto a parlarti'}</div>
-        </div>
-        <div class="boss-stars">${starsStr}</div>`;
-      bossSection.appendChild(row);
-    });
-  }
-
+function buildQueue() {
+  ensureDay();
   const today = ankiDay();
-  const wroteToday = state.diaryToday === today;
-  document.getElementById('diarySub').textContent =
-    wroteToday ? 'Сегодняшняя запись готова ✓' : 'Una frase su oggi';
-  document.getElementById('cartolineCount').textContent = state.cartoline.length;
-}
-
-let sessionQueue = [];
-let currentCard = null;
-let currentMode = null;
-let revealed = false;
-
-function startMixedQueue() {
-  sessionQueue = getDueCards();
-  if (sessionQueue.length === 0) return;
-  currentMode = 'mixed';
-  showView('cardView');
-  document.getElementById('modeBadge').className = 'mode-badge';
-  document.getElementById('modeBadge').textContent = 'Coda di oggi';
-  nextCard();
-}
-
-function startLocationMode(locId) {
-  const loc = LOCATIONS.find(l => l.id === locId);
-  let q = getDueCards(locId);
-  if (q.length === 0) q = CARDS.filter(c => c.loc === locId);
-  sessionQueue = q;
-  currentMode = locId;
-  showView('cardView');
-  document.getElementById('modeBadge').className = 'mode-badge';
-  document.getElementById('modeBadge').textContent = loc.emoji + ' ' + loc.name;
-  nextCard();
-}
-
-function backToMap() { showView('mapView'); renderMap(); save(); }
-
-const TYPE_LABELS = {
-  ru_to_it: 'Traduzione RU → IT',
-  it_to_ru: 'Traduzione IT → RU',
-  dialogue: 'Risposta nel dialogo',
-  free: 'Risposta libera'
-};
-
-function interpolate(text) {
-  if (!text) return text;
-  return text.replace(/\{name\}/g, state.profile.name || 'amica')
-    .replace(/\{origin\}/g, state.profile.origin || '');
-}
-
-function nextCard() {
-  if (currentMode === 'mixed') sessionQueue = getDueCards();
-  else {
-    let q = getDueCards(currentMode);
-    if (q.length === 0) q = CARDS.filter(c => c.loc === currentMode);
-    sessionQueue = q;
+  const due = [];
+  const fresh = [];
+  for (const card of CARDS) {
+    const cs = cardState(card.id);
+    if (!cs.seen) fresh.push(card);
+    else if (cs.due <= today) due.push(card);
   }
-  if (sessionQueue.length === 0 && currentMode === 'mixed') { showDone(); return; }
-  if (sessionQueue.length === 0) { backToMap(); return; }
-  currentCard = sessionQueue[0];
-  renderCard(currentCard);
+  save();
+  shuffle(due);
+  shuffle(fresh);
+  const newSlice = fresh.slice(0, Math.max(0, NEW_PER_DAY));
+  const combined = due.concat(newSlice);
+  shuffle(combined);
+  // attach random direction per repetition
+  return combined.map(c => ({ card: c, dir: Math.random() < 0.5 ? 'it2ru' : 'ru2it' }));
 }
 
-function renderCard(card) {
-  revealed = false;
-  const loc = LOCATIONS.find(l => l.id === card.loc);
-  const speaker = loc.character;
-  const isNew = !state.cards[card.id];
-
-  document.getElementById('cardLoc').innerHTML = `${loc.emoji} ${loc.name}`;
-
-  if (card.speakerSays) {
-    document.getElementById('cardSpeaker').innerHTML =
-      `<span class="speaker-emoji">${speaker.emoji}</span><span class="speaker-name">${speaker.name}</span> dice:`;
-    document.getElementById('cardSpeaker').style.display = '';
-  } else {
-    document.getElementById('cardSpeaker').style.display = 'none';
+function shuffle(a) {
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i+1));
+    [a[i], a[j]] = [a[j], a[i]];
   }
-
-  document.getElementById('cardType').innerHTML =
-    `<span class="card-type-icon ${isNew ? 'new' : ''}"></span>${TYPE_LABELS[card.type]}${isNew ? ' · nuova' : ''}`;
-
-  const ctx = document.getElementById('cardContext');
-  if (card.context) { ctx.textContent = interpolate(card.context); ctx.style.display = ''; }
-  else ctx.style.display = 'none';
-
-  const promptEl = document.getElementById('cardPrompt');
-  if (card.speakerSays) promptEl.innerHTML = `<span class="card-prompt-it">${interpolate(card.speakerSays)}</span>`;
-  else promptEl.textContent = interpolate(card.prompt);
-
-  document.getElementById('cardInstruction').textContent = card.instruction;
-
-  const input = document.getElementById('answerInput');
-  input.value = ''; input.disabled = false; input.style.display = '';
-
-  document.getElementById('reveal').classList.remove('visible');
-  document.getElementById('rateButtons').classList.remove('visible');
-  document.getElementById('showBtn').style.display = '';
 }
 
-function showAnswer() {
-  revealed = true;
-  const input = document.getElementById('answerInput');
-  const userAnswer = input.value.trim() || '(vuoto)';
-  input.disabled = true;
+// ---------- normalization & matching ----------
+function normalize(s) {
+  return s.toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // strip accents for comparison
+    .replace(/['’]/g, ' ')
+    .replace(/[^\p{L}\p{N}\s]/gu, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
 
-  if (currentCard.saves && userAnswer && userAnswer !== '(vuoto)') {
-    if (currentCard.saves === 'name') {
-      const m = userAnswer.match(/(?:mi chiamo|sono)\s+([A-Za-zА-Яа-я]+)/i);
-      if (m) state.profile.name = m[1];
-    } else if (currentCard.saves === 'origin') {
-      state.profile.origin = userAnswer;
+function levenshtein(a, b) {
+  const m = a.length, n = b.length;
+  if (m === 0) return n;
+  if (n === 0) return m;
+  const dp = Array.from({length: m+1}, () => new Array(n+1).fill(0));
+  for (let i=0;i<=m;i++) dp[i][0]=i;
+  for (let j=0;j<=n;j++) dp[0][j]=j;
+  for (let i=1;i<=m;i++) {
+    for (let j=1;j<=n;j++) {
+      const cost = a[i-1]===b[j-1] ? 0 : 1;
+      dp[i][j] = Math.min(dp[i-1][j]+1, dp[i][j-1]+1, dp[i-1][j-1]+cost);
     }
   }
-
-  document.getElementById('yourAnswer').textContent = userAnswer;
-  const isToRu = currentCard.type === 'it_to_ru';
-  document.getElementById('modelAnswer').textContent = currentCard.answer;
-  document.getElementById('modelAnswer').className = 'reveal-text' + (isToRu ? ' ru' : '');
-
-  let label = 'Modello';
-  if (currentCard.type === 'free') label = 'Un esempio';
-  else if (currentCard.altAnswers) label = 'Modello (varianti possibili)';
-  document.getElementById('modelLabel').textContent = label;
-
-  document.getElementById('explain').textContent = currentCard.explain;
-  document.getElementById('reveal').classList.add('visible');
-
-  const cardState = state.cards[currentCard.id] || { ef: 2.5, reps: 0, interval: 0 };
-  document.getElementById('intHard').textContent = previewInterval(cardState, 2);
-  document.getElementById('intGood').textContent = previewInterval(cardState, 3);
-  document.getElementById('intEasy').textContent = previewInterval(cardState, 4);
-
-  document.getElementById('showBtn').style.display = 'none';
-  document.getElementById('rateButtons').classList.add('visible');
+  return dp[m][n];
 }
 
-function rate(q) {
-  if (!revealed) return;
-  const id = currentCard.id;
-  let card = state.cards[id] || { ef: 2.5, reps: 0, interval: 0, due: 0 };
-  card = applyRating(card, q);
-  state.cards[id] = card;
-  updateStreakOnStudy();
-  const xpGain = q === 1 ? 1 : q === 2 ? 3 : q === 3 ? 5 : 7;
-  state.xp += xpGain; state.todayCount += 1; state.todayXP += xpGain;
-  save(); renderHeader(); nextCard();
-}
-
-function showDone() {
-  showView('doneScreen');
-  document.getElementById('doneCount').textContent = state.todayCount;
-  document.getElementById('doneXP').textContent = state.todayXP;
-  document.getElementById('doneStreak').textContent = state.streak + '🔥';
-}
-
-// ============== BOSS FLOW ==============
-let currentBoss = null;
-let bossReplyIndex = 0;
-let bossCorrectCount = 0;
-let bossInScene = false;
-
-function openBossIntro(boss) {
-  currentBoss = boss;
-  const loc = LOCATIONS.find(l => l.id === boss.locId);
-  const character = loc.character;
-  const saved = state.bosses[boss.id];
-  const intro = document.getElementById('bossIntro');
-  intro.innerHTML = `
-    <div class="boss-intro-emoji">${character.emoji}</div>
-    <div class="boss-intro-title">${boss.title}</div>
-    <div class="boss-intro-titleRu">${boss.titleRu}</div>
-    <div class="boss-intro-desc">${boss.description}</div>
-    <div class="boss-intro-rules">
-      <strong>Как это работает:</strong><br>
-      • Сценка из ${boss.replies.length} реплик<br>
-      • Пишешь ответы своими словами — главное чтобы ключевые слова были<br>
-      • Опечатки прощаются<br>
-      • Сценка идёт до конца, даже если ошибаешься<br>
-      • Проходной балл: ${Math.round(BOSS_PASS_THRESHOLD * 100)}%${saved && saved.bestStars ? `<br><br><strong>Лучший результат:</strong> ${'★'.repeat(saved.bestStars)}${'☆'.repeat(3 - saved.bestStars)}` : ''}
-    </div>
-    <button class="boss-start" onclick="startBossScene()">${saved ? 'Ripeti la scena' : 'Inizia la scena'}</button>`;
-  showView('bossIntroView');
-}
-
-function startBossScene() {
-  bossReplyIndex = 0; bossCorrectCount = 0; bossInScene = true;
-  const loc = LOCATIONS.find(l => l.id === currentBoss.locId);
-  document.getElementById('bossSceneBadge').textContent = loc.emoji + ' ' + currentBoss.title;
-  showView('bossSceneView');
-  renderBossReply();
-}
-
-function renderBossReply() {
-  const reply = currentBoss.replies[bossReplyIndex];
-  const loc = LOCATIONS.find(l => l.id === currentBoss.locId);
-  const character = loc.character;
-  const total = currentBoss.replies.length;
-
-  document.getElementById('bossProgText').textContent = `Battuta ${bossReplyIndex + 1} / ${total}`;
-  document.getElementById('bossProgFill').style.width = ((bossReplyIndex / total) * 100) + '%';
-
-  document.getElementById('bossSpeaker').innerHTML =
-    `<span class="speaker-emoji">${character.emoji}</span><span class="speaker-name">${character.name}</span> dice:`;
-  document.getElementById('bossPrompt').innerHTML = `<span class="card-prompt-it">${reply.says}</span>`;
-  document.getElementById('bossInstruction').textContent = reply.instruction;
-
-  const input = document.getElementById('bossInput');
-  input.value = ''; input.disabled = false;
-  document.getElementById('bossReveal').classList.remove('visible');
-  document.getElementById('bossSubmit').style.display = '';
-  document.getElementById('bossContinue').classList.remove('visible');
-  const reaction = document.getElementById('bossReaction');
-  reaction.classList.remove('visible', 'ok', 'fail');
-}
-
-function submitBossReply() {
-  const reply = currentBoss.replies[bossReplyIndex];
-  const input = document.getElementById('bossInput');
-  const userAnswer = input.value.trim();
-  input.disabled = true;
-
-  const ok = userAnswer.length > 0 && checkBossReply(userAnswer, reply);
-  if (ok) bossCorrectCount++;
-
-  document.getElementById('bossYours').textContent = userAnswer || '(vuoto)';
-  const yoursRow = document.getElementById('bossYoursRow');
-  yoursRow.className = 'reveal-row ' + (ok ? 'yours' : 'wrong');
-  yoursRow.querySelector('.reveal-label').textContent = ok ? 'La tua risposta ✓' : 'La tua risposta ✗';
-
-  document.getElementById('bossModel').textContent = reply.model;
-  document.getElementById('bossReveal').classList.add('visible');
-
-  const reaction = document.getElementById('bossReaction');
-  reaction.className = 'boss-reaction visible ' + (ok ? 'ok' : 'fail');
-  reaction.textContent = ok ? reply.reactionOk : reply.reactionFail;
-
-  document.getElementById('bossSubmit').style.display = 'none';
-  document.getElementById('bossContinue').classList.add('visible');
-  document.getElementById('bossContinue').textContent =
-    (bossReplyIndex < currentBoss.replies.length - 1) ? 'Continua →' : 'Vedi il risultato →';
-}
-
-function nextBossReply() {
-  bossReplyIndex++;
-  if (bossReplyIndex >= currentBoss.replies.length) finishBoss();
-  else renderBossReply();
-}
-
-function finishBoss() {
-  bossInScene = false;
-  const total = currentBoss.replies.length;
-  const ratio = bossCorrectCount / total;
-  const passed = ratio >= BOSS_PASS_THRESHOLD;
-  let stars = 1;
-  if (ratio >= 1) stars = 3;
-  else if (ratio >= BOSS_PASS_THRESHOLD) stars = 2;
-
-  if (!state.bosses[currentBoss.id]) state.bosses[currentBoss.id] = { ef: 2.5, reps: 0, interval: 0 };
-  const bs = state.bosses[currentBoss.id];
-  bs.lastScore = bossCorrectCount;
-  bs.bestScore = Math.max(bs.bestScore || 0, bossCorrectCount);
-  bs.bestStars = Math.max(bs.bestStars || 0, stars);
-  bs.timesPlayed = (bs.timesPlayed || 0) + 1;
-  if (passed) bs.timesPassed = (bs.timesPassed || 0) + 1;
-
-  const q = stars === 3 ? 4 : stars === 2 ? 3 : 1;
-  applyRating(bs, q);
-  if (passed && bs.timesPassed === 1) {
-    bs.interval = 14;
-    bs.due = nextAnkiDayStart(14);
+// Word-level edit distance: substitution cost depends on whether the
+// words are a near-identical typo (allowed) or genuinely different words (not allowed).
+function wordLevelDiff(userWords, correctWords) {
+  const m = userWords.length, n = correctWords.length;
+  // dp[i][j] = {cost, typos} best cost and typo-count to align first i user words with first j correct words
+  const dp = Array.from({length: m+1}, () => new Array(n+1).fill(null));
+  dp[0][0] = { cost: 0, typos: 0 };
+  for (let i=1;i<=m;i++) dp[i][0] = { cost: dp[i-1][0].cost + 1, typos: dp[i-1][0].typos };
+  for (let j=1;j<=n;j++) dp[0][j] = { cost: dp[0][j-1].cost + 1, typos: dp[0][j-1].typos };
+  for (let i=1;i<=m;i++) {
+    for (let j=1;j<=n;j++) {
+      const a = userWords[i-1], b = correctWords[j-1];
+      let subCost, subTypos;
+      if (a === b) { subCost = 0; subTypos = 0; }
+      else {
+        const charDist = levenshtein(a, b);
+        // allow a near-identical typo only for reasonably long words
+        if (charDist === 1 && Math.max(a.length, b.length) >= 4) { subCost = 0.3; subTypos = 1; }
+        else { subCost = 1; subTypos = 0; }
+      }
+      const subOption = { cost: dp[i-1][j-1].cost + subCost, typos: dp[i-1][j-1].typos + subTypos };
+      const delOption = { cost: dp[i-1][j].cost + 1, typos: dp[i-1][j].typos };
+      const insOption = { cost: dp[i][j-1].cost + 1, typos: dp[i][j-1].typos };
+      let bestOpt = subOption;
+      if (delOption.cost < bestOpt.cost) bestOpt = delOption;
+      if (insOption.cost < bestOpt.cost) bestOpt = insOption;
+      dp[i][j] = bestOpt;
+    }
   }
-
-  updateStreakOnStudy();
-  const xpGain = passed ? 25 : 10;
-  state.xp += xpGain;
-  state.todayCount += total;
-  state.todayXP += xpGain;
-
-  let isFirstPass = false;
-  if (passed && bs.timesPassed === 1) {
-    const now = new Date();
-    const month = ['gen','feb','mar','apr','mag','giu','lug','ago','set','ott','nov','dic'][now.getMonth()];
-    state.cartoline.push({
-      bossId: currentBoss.id,
-      emoji: currentBoss.postcard.emoji,
-      title: currentBoss.postcard.title,
-      phrase: currentBoss.postcard.phrase,
-      dateStr: now.getDate() + ' ' + month
-    });
-    isFirstPass = true;
-  }
-
-  save(); renderHeader();
-  renderBossResult(passed, stars, bossCorrectCount, total, isFirstPass);
+  return dp[m][n];
 }
 
-function renderBossResult(passed, stars, correct, total, isFirstPass) {
-  const emoji = passed ? (stars === 3 ? '🌟' : '🎉') : '💪';
-  const title = passed ? (stars === 3 ? 'Perfetto!' : 'Ottima scena!') : 'Quasi…';
-  const sub = passed
-    ? `${correct} / ${total} risposte corrette`
-    : `${correct} / ${total} risposte corrette · prova ancora!`;
-  const starsHtml = [1,2,3].map(n =>
-    n <= stars ? '★' : `<span class="dim">★</span>`).join('');
+// returns 'exact' | 'close' | 'wrong'
+function matchAnswer(userInput, correctOptions) {
+  const u = normalize(userInput);
+  if (!u) return 'wrong';
+  const uWords = u.split(' ').filter(Boolean);
+  let best = 'wrong';
+  for (const opt of correctOptions) {
+    const o = normalize(opt);
+    if (u === o) return 'exact';
+    const oWords = o.split(' ').filter(Boolean);
+    const result = wordLevelDiff(uWords, oWords);
+    // allow at most 1-2 minor character typos (no wrong/missing/extra words at all)
+    if (result.cost <= 0.6 && result.typos <= 2) best = 'close';
+  }
+  return best;
+}
 
-  let postcardHtml = '';
-  if (isFirstPass) {
-    const card = currentBoss.postcard;
-    const cartolina = state.cartoline[state.cartoline.length - 1];
-    postcardHtml = `
-      <div style="font-size: 12px; color: var(--muted); margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.08em;">Una nuova cartolina!</div>
-      <div class="postcard">
-        <div class="postcard-top">
-          <div class="postcard-emoji">${card.emoji}</div>
-          <div class="postcard-title">${card.title}</div>
-        </div>
-        <div class="postcard-body">
-          <div class="postcard-phrase">«${card.phrase}»</div>
-          <div class="postcard-date">${cartolina.dateStr}</div>
-        </div>
+// ============== RENDER ==============
+function render() {
+  ensureDay();
+  document.getElementById('hStreak').textContent = state.streak;
+  document.getElementById('hToday').textContent = state.todayCount;
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === activeTab));
+
+  const screen = document.getElementById('screen');
+  if (activeTab === 'study') renderStudy(screen);
+  else if (activeTab === 'diary') renderDiary(screen);
+  else renderStats(screen);
+}
+
+function renderStudy(screen) {
+  if (qi >= queue.length) {
+    queue = buildQueue();
+    qi = 0;
+  }
+  if (queue.length === 0) {
+    screen.innerHTML = `
+      <div class="empty-state">
+        <div class="big">✅</div>
+        <div>На сегодня всё пройдено.<br>Возвращайся завтра — появятся новые карточки на повторение.</div>
       </div>`;
-  }
-
-  document.getElementById('bossResult').innerHTML = `
-    <div class="boss-result-emoji">${emoji}</div>
-    <div class="boss-result-title">${title}</div>
-    <div class="boss-result-score">${sub}</div>
-    <div class="boss-result-stars">${starsHtml}</div>
-    ${postcardHtml}
-    <button class="done-cta" onclick="backToMap()">Torna alla città</button>`;
-  showView('bossResultView');
-}
-
-function confirmBossExit() {
-  if (bossInScene) {
-    if (!confirm('Уйти со сцены? Прогресс не сохранится.')) return;
-  }
-  bossInScene = false;
-  backToMap();
-}
-
-function openDiary() {
-  showView('diaryView');
-  document.getElementById('diaryInput').value = '';
-  renderDiaryPast();
-}
-
-function renderDiaryPast() {
-  const past = document.getElementById('diaryPast');
-  if (state.diary.length === 0) { past.innerHTML = ''; return; }
-  past.innerHTML = `<div class="diary-past-label">Записи прошлых дней</div>` +
-    state.diary.slice().reverse().map(e =>
-      `<div class="diary-entry">
-        <div class="diary-entry-date">${e.dateStr}</div>
-        <div class="diary-entry-text">${e.text}</div>
-      </div>`).join('');
-}
-
-function saveDiary() {
-  const txt = document.getElementById('diaryInput').value.trim();
-  if (!txt) { backToMap(); return; }
-  const now = new Date();
-  const month = ['gen','feb','mar','apr','mag','giu','lug','ago','set','ott','nov','dic'][now.getMonth()];
-  state.diary.push({
-    date: now.getTime(),
-    dateStr: now.getDate() + ' ' + month,
-    text: txt
-  });
-  state.diaryToday = ankiDay();
-  save(); backToMap();
-}
-
-function openCartoline() {
-  showView('cartolineView');
-  const list = document.getElementById('cartolineList');
-  if (state.cartoline.length === 0) {
-    list.innerHTML = `<div class="cartoline-empty">Пока пусто.<br>Открытки появятся, когда пройдёшь "Incontri speciali" с персонажами.</div>`;
     return;
   }
-  list.innerHTML = state.cartoline.slice().reverse().map(c => `
-    <div class="postcard">
-      <div class="postcard-top">
-        <div class="postcard-emoji">${c.emoji}</div>
-        <div class="postcard-title">${c.title}</div>
-      </div>
-      <div class="postcard-body">
-        <div class="postcard-phrase">«${c.phrase}»</div>
-        <div class="postcard-date">${c.dateStr}</div>
-      </div>
-    </div>`).join('');
+
+  const item = queue[qi];
+  currentDir = item.dir;
+  const card = item.card;
+  const promptText = currentDir === 'it2ru' ? card.it : card.ru;
+  const promptLabel = currentDir === 'it2ru' ? 'Переведи на русский' : 'Переведи на итальянский';
+
+  const total = queue.length;
+  const pct = Math.round((qi / total) * 100);
+
+  screen.innerHTML = `
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+    <div class="card-box">
+      <div class="dir-badge">${promptLabel}</div>
+      <div class="prompt-text ${currentDir==='it2ru' ? 'it':''}">${promptText}</div>
+      <input type="text" id="answerInput" autocomplete="off" autocapitalize="off" autocorrect="off" placeholder="Твой ответ..." />
+      <button class="btn btn-primary" id="checkBtn">Проверить</button>
+      <div id="feedbackArea"></div>
+      <div class="topics-line">${card.topics.join(' · ')}</div>
+    </div>
+  `;
+
+  answered = false;
+  const input = document.getElementById('answerInput');
+  input.focus();
+  const checkBtn = document.getElementById('checkBtn');
+  checkBtn.addEventListener('click', () => handleCheck(card));
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      if (!answered) handleCheck(card);
+      else handleNext();
+    }
+  });
 }
 
-function resetAll() {
-  if (!confirm('Resettare tutti i progressi?')) return;
-  localStorage.removeItem('italiano_v2');
-  state = {
-    cards: {}, bosses: {}, xp: 0, streak: 0, lastStudyDay: null,
-    todayCount: 0, todayXP: 0, todayDay: null,
-    profile: {}, diary: [], diaryToday: null, cartoline: []
-  };
-  renderMap();
+function handleCheck(card) {
+  if (answered) return;
+  answered = true;
+  const input = document.getElementById('answerInput');
+  const userVal = input.value;
+  input.disabled = true;
+  const fbArea = document.getElementById('feedbackArea');
+  const checkBtn = document.getElementById('checkBtn');
+
+  if (currentDir === 'ru2it') {
+    // Producing Italian: grammar accuracy matters -> strict auto-check
+    const correctOptions = [card.it].concat(card.itAlt || []);
+    const correctDisplay = card.it;
+    const result = matchAnswer(userVal, correctOptions);
+    let quality;
+    if (result === 'exact') {
+      quality = 5;
+      fbArea.innerHTML = `<div class="feedback correct">Верно!</div>`;
+    } else if (result === 'close') {
+      quality = 4;
+      fbArea.innerHTML = `<div class="feedback almost">Почти — мелкая опечатка, засчитано.<div class="answer-line">${correctDisplay}</div></div>`;
+    } else {
+      quality = 1;
+      fbArea.innerHTML = `<div class="feedback wrong">Неверно.<div class="answer-line">${correctDisplay}</div></div>`;
+    }
+    state.todayCount += 1;
+    gradeCard(card.id, quality);
+    save();
+    document.getElementById('hToday').textContent = state.todayCount;
+    checkBtn.textContent = 'Дальше';
+    checkBtn.onclick = handleNext;
+  } else {
+    // Translating into Russian: meaning matters more than exact wording -> self-rating
+    const correctDisplay = card.ru;
+    fbArea.innerHTML = `
+      <div class="feedback almost">
+        Эталон: <div class="answer-line">${correctDisplay}</div>
+        <div style="margin-top:10px;">Твой ответ совпадает по смыслу?</div>
+      </div>
+      <button class="btn btn-primary" id="selfYes" style="margin-top:8px;">Да, верно</button>
+      <button class="btn btn-secondary" id="selfNo">Нет, неверно</button>
+    `;
+    checkBtn.style.display = 'none';
+    document.getElementById('selfYes').addEventListener('click', () => selfGrade(card, true));
+    document.getElementById('selfNo').addEventListener('click', () => selfGrade(card, false));
+  }
 }
 
-load();
-const today = ankiDay();
-if (state.todayDay !== today) {
-  state.todayCount = 0; state.todayXP = 0; state.todayDay = today;
+function selfGrade(card, correct) {
+  const quality = correct ? 5 : 1;
+  state.todayCount += 1;
+  gradeCard(card.id, quality);
+  save();
+  document.getElementById('hToday').textContent = state.todayCount;
+  const fbArea = document.getElementById('feedbackArea');
+  fbArea.innerHTML += `<button class="btn btn-primary" id="nextAfterSelf" style="margin-top:8px;">Дальше</button>`;
+  document.getElementById('nextAfterSelf').addEventListener('click', handleNext);
 }
-renderMap();
+
+function handleNext() {
+  qi += 1;
+  renderStudy(document.getElementById('screen'));
+}
+
+function renderDiary(screen) {
+  const todayStr = ankiDay();
+  const todayEntry = state.diary.find(d => d.date === todayStr);
+  let html = `
+    <div class="card-box">
+      <div class="dir-badge">Свободное письмо</div>
+      <div class="prompt-text" style="font-size:15px;font-style:normal;">Напиши пару фраз по-итальянски о сегодняшнем дне. Грамматика не должна быть идеальной — важна практика.</div>
+      <textarea id="diaryInput" placeholder="Oggi...">${todayEntry ? todayEntry.text : ''}</textarea>
+      <button class="btn btn-primary" id="diarySave">Сохранить</button>
+    </div>
+  `;
+  if (state.diary.length) {
+    html += `<div style="margin-top:24px;font-size:13px;color:var(--muted);margin-bottom:8px;">Прошлые записи</div>`;
+    state.diary.slice().reverse().forEach(d => {
+      if (d.date === todayStr) return;
+      html += `<div class="diary-entry"><div class="diary-date">${d.date}</div>${escapeHtml(d.text)}</div>`;
+    });
+  }
+  screen.innerHTML = html;
+  document.getElementById('diarySave').addEventListener('click', () => {
+    const text = document.getElementById('diaryInput').value.trim();
+    if (!text) return;
+    const idx = state.diary.findIndex(d => d.date === todayStr);
+    if (idx >= 0) state.diary[idx].text = text;
+    else state.diary.push({ date: todayStr, text });
+    save();
+    renderDiary(screen);
+  });
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function renderStats(screen) {
+  const total = CARDS.length;
+  let seen = 0, mature = 0, dueToday = 0;
+  const today = ankiDay();
+  for (const card of CARDS) {
+    const cs = state.cards[card.id];
+    if (cs && cs.seen) {
+      seen += 1;
+      if (cs.interval >= 21) mature += 1;
+      if (cs.due <= today) dueToday += 1;
+    } else {
+      dueToday += 1; // not yet introduced counts toward available pool, not "due review" strictly
+    }
+  }
+  screen.innerHTML = `
+    <div class="stat-grid">
+      <div class="stat-tile"><div class="num">${state.streak}</div><div class="label">дней подряд</div></div>
+      <div class="stat-tile"><div class="num">${state.todayCount}</div><div class="label">сегодня пройдено</div></div>
+      <div class="stat-tile"><div class="num">${seen}/${total}</div><div class="label">карточек изучено</div></div>
+      <div class="stat-tile"><div class="num">${mature}</div><div class="label">закреплено (21+ дн.)</div></div>
+    </div>
+    <div class="reset-link" id="resetLink">Сбросить весь прогресс</div>
+  `;
+  document.getElementById('resetLink').addEventListener('click', () => {
+    if (!confirm('Точно сбросить весь прогресс?')) return;
+    localStorage.removeItem(STORAGE_KEY);
+    state = defaultState();
+    save();
+    queue = [];
+    qi = 0;
+    render();
+  });
+}
+
+// ============== TABS ==============
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    activeTab = t.dataset.tab;
+    if (activeTab === 'study') { queue = buildQueue(); qi = 0; }
+    render();
+  });
+});
+
+// ============== INIT ==============
+ensureDay();
+queue = buildQueue();
+render();
 </script>
 </body>
 </html>
