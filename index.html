@@ -2,650 +2,515 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Italiano</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Italiano">
+<title>Italiano — тренажёр</title>
 <style>
-  :root {
-    --bg: #F7F4EF;
-    --surface: #FFFFFF;
-    --ink: #1A1A1A;
-    --muted: #888;
-    --line: #E5E0D8;
-    --accent: #C85A2A;
-    --accent-light: #F2E4DC;
-    --green: #3A7D44;
-    --green-light: #E6F4E8;
-    --red: #C0392B;
-    --red-light: #FDECEA;
-    --gold: #D4A843;
-    --radius: 14px;
-    --font: 'Georgia', serif;
-    --ui: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  :root{
+    --paper:#f6f1e7; --paper-card:#fffaf0; --ink:#3a352c; --muted:#8a8073;
+    --accent:#c46b4e; --accent-soft:#eddbc9; --good:#4f7a5c; --good-bg:#e7f0e8;
+    --bad:#b1503f; --bad-bg:#f7e6e2; --line:#e4d9c6;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  body {
-    background: var(--bg);
-    font-family: var(--ui);
-    color: var(--ink);
-    min-height: 100vh;
-    padding-bottom: 40px;
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{height:100%;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif;
+    min-height:100vh; display:flex; flex-direction:column; align-items:center;
+    padding:calc(env(safe-area-inset-top) + 16px) 16px calc(env(safe-area-inset-bottom) + 24px);
   }
-  .header {
-    background: var(--surface);
-    border-bottom: 1px solid var(--line);
-    padding: 14px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 10;
+  .wrap{width:100%; max-width:460px;}
+
+  header{display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;}
+  h1{font-size:18px; font-weight:700; margin:0;}
+  .stats{
+    font-size:12.5px; color:var(--muted); display:flex; gap:10px; align-items:center;
   }
-  .header-title { font-family: var(--font); font-size: 18px; font-style: italic; color: var(--accent); }
-  .header-stats { display: flex; gap: 12px; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
-  .header-stat strong { color: var(--ink); font-weight: 600; }
-  .tabs {
-    display: flex; gap: 8px; padding: 12px 20px 0; overflow-x: auto;
+  .stats b.g{color:var(--good);} .stats b.b{color:var(--bad);}
+
+  .tabs{display:flex; gap:6px; margin-bottom:14px; flex-wrap:wrap;}
+  .tab{
+    font-size:12.5px; font-weight:600; padding:7px 12px; border-radius:20px;
+    background:var(--paper-card); border:1px solid var(--line); color:var(--muted);
+    cursor:pointer; white-space:nowrap; user-select:none;
   }
-  .tab {
-    padding: 8px 14px; border-radius: 20px; font-size: 13px; font-weight: 600;
-    background: var(--surface); border: 1px solid var(--line); color: var(--muted);
-    white-space: nowrap; cursor: pointer;
+  .tab.active{background:var(--accent); color:#fff; border-color:var(--accent);}
+
+  .meta-row{
+    display:flex; justify-content:space-between; align-items:center;
+    margin-bottom:8px; font-size:12px; color:var(--muted);
   }
-  .tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
-  .screen { padding: 18px 20px 40px; max-width: 520px; margin: 0 auto; }
-  .card-box {
-    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
-    padding: 22px 18px; margin-bottom: 14px;
+
+  .card{
+    background:var(--paper-card); border:1px solid var(--line); border-radius:18px;
+    padding:24px 20px; box-shadow:0 1px 3px rgba(0,0,0,.05);
   }
-  .dir-badge {
-    display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .04em;
-    color: var(--accent); background: var(--accent-light); padding: 3px 9px; border-radius: 10px;
-    margin-bottom: 12px; text-transform: uppercase;
+  .kind{
+    font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em;
+    margin-bottom:10px; font-weight:600;
   }
-  .prompt-text { font-family: var(--font); font-size: 21px; line-height: 1.4; margin-bottom: 16px; }
-  .prompt-text.it { font-style: italic; }
-  input[type=text] {
-    width: 100%; padding: 13px 14px; border: 1.5px solid var(--line); border-radius: 10px;
-    font-size: 16px; font-family: var(--ui); background: var(--bg); color: var(--ink);
+  .prompt{font-size:19px; line-height:1.5; margin-bottom:18px;}
+  .prompt b.hl{background:var(--accent-soft); border-radius:5px; padding:0 4px;}
+
+  input[type=text]{
+    width:100%; font-size:17px; padding:13px 14px; border-radius:12px;
+    border:1.5px solid var(--line); background:#fff; color:var(--ink);
+    outline:none; font-family:inherit;
   }
-  input[type=text]:focus { outline: none; border-color: var(--accent); }
-  .btn {
-    display: block; width: 100%; padding: 13px; border-radius: 10px; border: none;
-    font-size: 15px; font-weight: 600; margin-top: 10px; cursor: pointer; font-family: var(--ui);
+  input[type=text]:focus{border-color:var(--accent);}
+
+  .btnrow{display:flex; gap:10px; margin-top:12px;}
+  button{
+    flex:1; font-size:15px; font-weight:600; padding:13px; border-radius:12px;
+    border:none; cursor:pointer; font-family:inherit;
   }
-  .btn-primary { background: var(--accent); color: #fff; }
-  .btn-secondary { background: var(--surface); border: 1.5px solid var(--line); color: var(--ink); }
-  .feedback {
-    margin-top: 14px; padding: 13px 14px; border-radius: 10px; font-size: 14px; line-height: 1.5;
+  .check-btn{background:var(--accent); color:#fff;}
+  .next-btn{background:var(--accent-soft); color:var(--ink); display:none;}
+
+  .feedback{
+    margin-top:14px; padding:12px 14px; border-radius:12px; font-size:15px;
+    display:none; line-height:1.4;
   }
-  .feedback.correct { background: var(--green-light); color: var(--green); }
-  .feedback.almost { background: var(--gold-light, #FAF1DC); color: #8a6d1f; }
-  .feedback.wrong { background: var(--red-light); color: var(--red); }
-  .feedback .answer-line { font-weight: 700; margin-top: 4px; }
-  .topics-line { font-size: 11px; color: var(--muted); margin-top: 10px; }
-  .progress-bar-wrap { height: 5px; background: var(--line); border-radius: 3px; margin-bottom: 16px; overflow: hidden; }
-  .progress-bar-fill { height: 100%; background: var(--accent); transition: width .3s; }
-  .empty-state { text-align: center; padding: 60px 20px; color: var(--muted); }
-  .empty-state .big { font-size: 42px; margin-bottom: 14px; }
-  .diary-entry {
-    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
-    padding: 14px 16px; margin-bottom: 10px;
+  .feedback.correct{background:var(--good-bg); color:var(--good); display:block;}
+  .feedback.incorrect{background:var(--bad-bg); color:var(--bad); display:block;}
+  .feedback .correct-answer{font-weight:700; margin-top:2px;}
+
+  .empty{
+    text-align:center; padding:50px 20px; color:var(--muted); font-size:15px; line-height:1.6;
   }
-  .diary-date { font-size: 11px; color: var(--muted); margin-bottom: 6px; }
-  textarea {
-    width: 100%; min-height: 110px; padding: 13px 14px; border: 1.5px solid var(--line); border-radius: 10px;
-    font-size: 15px; font-family: var(--ui); background: var(--bg); color: var(--ink); resize: vertical;
+
+  .footer-row{
+    display:flex; justify-content:center; margin-top:18px;
   }
-  textarea:focus { outline: none; border-color: var(--accent); }
-  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
-  .stat-tile { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; text-align: center; }
-  .stat-tile .num { font-size: 24px; font-weight: 700; color: var(--accent); }
-  .stat-tile .label { font-size: 11px; color: var(--muted); margin-top: 2px; }
-  .reset-link { display: block; text-align: center; margin-top: 30px; font-size: 12px; color: var(--muted); }
+  .reset-link{
+    font-size:12px; color:var(--muted); text-decoration:underline; cursor:pointer; background:none; border:none; flex:none; padding:6px;
+  }
 </style>
 </head>
 <body>
+<div class="wrap">
 
-<div class="header">
-  <div class="header-title">Italiano</div>
-  <div class="header-stats">
-    <div class="header-stat"><strong id="hStreak">0</strong> дней подряд</div>
-    <div class="header-stat"><strong id="hToday">0</strong> сегодня</div>
+  <header>
+    <h1>Italiano</h1>
+    <div class="stats" id="statsBar">
+      <span><b class="g" id="statCorrect">0</b> giuste</span>
+      <span><b class="b" id="statWrong">0</b> sbagliate</span>
+    </div>
+  </header>
+
+  <div class="tabs" id="tabs"></div>
+  <div class="meta-row" id="metaRow"></div>
+
+  <div id="cardArea"></div>
+
+  <div class="footer-row">
+    <button class="reset-link" id="resetBtn">Сбросить прогресс</button>
   </div>
 </div>
 
-<div class="tabs">
-  <div class="tab active" data-tab="study">📚 Практика</div>
-  <div class="tab" data-tab="diary">✍️ Дневник</div>
-  <div class="tab" data-tab="stats">📊 Прогресс</div>
-</div>
-
-<div class="screen" id="screen"></div>
-
 <script>
-/* ============== CARD DATA ==============
-   Each card mixes 2+ grammar points where natural.
-   it / itAlt: acceptable Italian answers
-   ru / ruAlt: acceptable Russian answers
-   topics: for coverage / mixing
-*/
-const CARDS = [
-  { id:'c1', it:'Io sono russa e vivo a Helsinki.', itAlt:['Sono russa e vivo a Helsinki.'], ru:'Я русская и живу в Хельсинки.', ruAlt:['Я русская, живу в Хельсинки.'], topics:['essere','pronomi'] },
-  { id:'c2', it:'Tu hai due fratelli?', itAlt:['Hai due fratelli?'], ru:'У тебя два брата?', ruAlt:['Есть ли у тебя два брата?'], topics:['avere','numeri'] },
-  { id:'c3', it:'Lui non è italiano, è russo.', ru:'Он не итальянец, он русский.', topics:['essere','negazione'] },
-  { id:'c4', it:'Noi vogliamo un caffè e due cornetti.', ru:'Мы хотим один кофе и два круассана.', topics:['volere','numeri','articoli'] },
-  { id:'c5', it:'Lei esce con le amiche stasera.', ru:'Она выходит с подругами сегодня вечером.', topics:['uscire','pronomi'] },
-  { id:'c6', it:'Mi piace la pizza, ma non mi piacciono i funghi.', ru:'Мне нравится пицца, но мне не нравятся грибы.', topics:['piacere','negazione','genere'] },
-  { id:'c7', it:'Hai fame? Io ho molta fame.', ru:'Ты голоден? Я очень голоден.', ruAlt:['Ты голодная? Я очень голодная.'], topics:['avere'] },
-  { id:'c8', it:'Quanti anni hai?', ru:'Сколько тебе лет?', topics:['avere','domande'] },
-  { id:'c9', it:'Non sono stanco, sono solo triste.', ru:'Я не устал, я просто грустный.', ruAlt:['Я не уставший, мне просто грустно.'], topics:['essere','negazione'] },
-  { id:'c10', it:'Loro non vogliono uscire oggi.', ru:'Они не хотят выходить сегодня.', topics:['volere','negazione','pronomi'] },
-  { id:'c11', it:'Il caffè è buono, ma la pizza è migliore.', ru:'Кофе хороший, но пицца лучше.', topics:['essere','genere','articoli'] },
-  { id:'c12', it:'Quante sorelle hai?', ru:'Сколько у тебя сестёр?', topics:['avere','domande','numeri'] },
-  { id:'c13', it:'Voglio una casa grande con un giardino.', ru:'Я хочу большой дом с садом.', topics:['volere','articoli','genere'] },
-  { id:'c14', it:'Lei ha due gatti e un cane.', ru:'У неё две кошки и одна собака.', topics:['avere','numeri','genere'] },
-  { id:'c15', it:'Chi sei tu?', ru:'Кто ты?', topics:['essere','domande','pronomi'] },
-  { id:'c16', it:'Non abbiamo tempo oggi.', ru:'У нас нет времени сегодня.', topics:['avere','negazione','pronomi'] },
-  { id:'c17', it:'Esci con noi stasera?', ru:'Ты выйдешь с нами сегодня вечером?', topics:['uscire','pronomi','domande'] },
-  { id:'c18', it:'A loro non piace il caffè freddo.', ru:'Им не нравится холодный кофе.', topics:['piacere','negazione','pronomi'] },
-  { id:'c19', it:'Sono le tre e mezza.', ru:'Сейчас половина четвёртого.', ruAlt:['Сейчас три тридцать.'], topics:['essere','numeri'] },
-  { id:'c20', it:'Dove vuoi andare stasera?', ru:'Куда ты хочешь пойти сегодня вечером?', topics:['volere','domande'] },
-  { id:'c21', it:'Io ho fretta, non ho tempo per parlare.', ru:'Я тороплюсь, у меня нет времени разговаривать.', topics:['avere','negazione'] },
-  { id:'c22', it:'Le ragazze sono italiane, i ragazzi sono russi.', ru:'Девушки итальянки, парни русские.', topics:['essere','genere','numeri'] },
-  { id:'c23', it:'Perché non vuoi uscire con me?', ru:'Почему ты не хочешь выходить со мной?', topics:['volere','negazione','domande'] },
-  { id:'c24', it:'Mi piacciono molto i libri italiani.', ru:'Мне очень нравятся итальянские книги.', topics:['piacere','genere'] },
-  { id:'c25', it:'Quanti anni ha tua sorella?', ru:'Сколько лет твоей сестре?', topics:['avere','domande'] },
-  { id:'c26', it:'Non sono di Roma, sono di Helsinki.', ru:'Я не из Рима, я из Хельсинки.', topics:['essere','negazione'] },
-  { id:'c27', it:'Vogliamo due camere, non una.', ru:'Мы хотим два номера, не один.', topics:['volere','numeri','negazione'] },
-  { id:'c28', it:'Esco sempre la sera con gli amici.', ru:'Я всегда выхожу вечером с друзьями.', topics:['uscire'] },
-  { id:'c29', it:'Hai un fratello o una sorella?', ru:'У тебя есть брат или сестра?', topics:['avere','domande','genere'] },
-  { id:'c30', it:'A me piace il tè, a lui piace il caffè.', ru:'Мне нравится чай, ему нравится кофе.', topics:['piacere','pronomi'] },
-  { id:'c31', it:'Chi è quella donna? È mia madre.', ru:'Кто эта женщина? Это моя мама.', topics:['essere','domande','genere'] },
-  { id:'c32', it:'Non abbiamo un appartamento, abbiamo una casa.', ru:'У нас нет квартиры, у нас есть дом.', topics:['avere','negazione','genere'] },
-  { id:'c33', it:'Quanto costa? Non lo so.', ru:'Сколько это стоит? Я не знаю.', topics:['domande','negazione'] },
-  { id:'c34', it:'Voglio imparare l\'italiano, non il francese.', ru:'Я хочу учить итальянский, а не французский.', topics:['volere','negazione','articoli'] },
-  { id:'c35', it:'Le piace molto Helsinki?', ru:'Ей очень нравится Хельсинки?', topics:['piacere','domande','pronomi'] },
+/* ======================= CARD CONTENT ======================= */
+const CARD_DATA = [
+  // 🆕 Прилагательные — согласование
+  {topic:"Прилагательные", kind:"Согласуй прилагательное", prompt:"La camera (piccolo)", answers:["piccola"]},
+  {topic:"Прилагательные", kind:"Согласуй прилагательное", prompt:"I musei (piccolo)", answers:["piccoli"]},
+  {topic:"Прилагательные", kind:"Согласуй прилагательное", prompt:"Le camere (piccolo)", answers:["piccole"]},
+  {topic:"Прилагательные", kind:"Согласуй прилагательное", prompt:"Il museo (piccolo)", answers:["piccolo"]},
+  {topic:"Прилагательные", kind:"Согласуй прилагательное", prompt:"Il ragazzo (alto)", answers:["alto"]},
+  {topic:"Прилагательные", kind:"Согласуй прилагательное", prompt:"I ragazzi (alto)", answers:["alti"]},
+  {topic:"Прилагательные", kind:"Согласуй прилагательное", prompt:"La casa (nuovo)", answers:["nuova"]},
+  {topic:"Прилагательные", kind:"Согласуй прилагательное", prompt:"Le case (nuovo)", answers:["nuove"]},
+  {topic:"Прилагательные", kind:"Согласуй прилагательное", prompt:"La finestra (aperto)", answers:["aperta"]},
+  {topic:"Прилагательные", kind:"Согласуй прилагательное", prompt:"Le finestre (aperto)", answers:["aperte"]},
+  {topic:"Прилагательные", kind:"Согласуй прилагательное", prompt:"La macchina (rosso)", answers:["rossa"]},
+  {topic:"Прилагательные", kind:"Согласуй прилагательное", prompt:"Lo studente (americano)", answers:["americano"]},
+  {topic:"Прилагательные", kind:"Согласуй прилагательное", prompt:"Gli studenti (americano)", answers:["americani"]},
+  {topic:"Прилагательные", kind:"Согласуй прилагательное", prompt:"La ragazza (italiano)", answers:["italiana"]},
+  {topic:"Прилагательные", kind:"Согласуй прилагательное", prompt:"La stazione (grande)", answers:["grande"], trans:"grande — прилагательное на -e, одна форма для м. и ж. рода"},
+  {topic:"Прилагательные", kind:"Согласуй прилагательное", prompt:"Le stazioni (grande)", answers:["grandi"], trans:"grandi — окончание -i только по числу, род не влияет"},
+  {topic:"Прилагательные", kind:"Согласуй прилагательное", prompt:"Il ristorante (grande)", answers:["grande"], trans:"grande — прилагательное на -e, одна форма для м. и ж. рода"},
+  {topic:"Прилагательные", kind:"Согласуй прилагательное", prompt:"I ristoranti (grande)", answers:["grandi"], trans:"grandi — окончание -i только по числу"},
+  {topic:"Прилагательные", kind:"Выбери и впиши верную форму", prompt:"L'albergo è economico / economici?", answers:["economico"]},
+  {topic:"Прилагательные", kind:"Выбери и впиши верную форму", prompt:"Le stanze sono nuovo / nuove?", answers:["nuove"]},
+  {topic:"Прилагательные", kind:"Выбери и впиши верную форму", prompt:"Il bar è cara / caro?", answers:["caro"]},
+  {topic:"Прилагательные", kind:"Выбери и впиши верную форму", prompt:"Il treno è rumoroso / rumorosi?", answers:["rumoroso"]},
+  {topic:"Прилагательные", kind:"Найди ошибку · впиши верное слово", prompt:"«La borsa è nuovo.» — что не так?", answers:["nuova"], trans:"borsa — ж.р., значит nuova"},
+  {topic:"Прилагательные", kind:"Найди ошибку · впиши верное слово", prompt:"«I fiori è belli.» — что не так?", answers:["sono"], trans:"fiori — мн.ч., нужен глагол sono, не è"},
+  {topic:"Прилагательные", kind:"Найди ошибку · впиши верное слово", prompt:"«Lo zaino è pesanti.» — что не так?", answers:["pesante"], trans:"zaino — ед.ч., значит pesante без -i"},
+  {topic:"Прилагательные", kind:"Найди ошибку · впиши верное слово", prompt:"«Le frasi sono lungo.» — что не так?", answers:["lunghe"], trans:"frase (ж.р., на -e) во мн.ч. → frasi; lungo согласуется: lunghe"},
+  {topic:"Прилагательные", kind:"Противоположность", prompt:"Qual è il contrario di vecchio?", answers:["nuovo"]},
+  {topic:"Прилагательные", kind:"Противоположность", prompt:"Qual è il contrario di economico?", answers:["caro"]},
+  {topic:"Прилагательные", kind:"Противоположность", prompt:"Qual è il contrario di occupato?", answers:["libero"]},
+  {topic:"Прилагательные", kind:"Противоположность", prompt:"Qual è il contrario di grande?", answers:["piccolo"]},
+  {topic:"Прилагательные", kind:"Противоположность", prompt:"Qual è il contrario di rumoroso?", answers:["silenzioso"]},
+  {topic:"Прилагательные", kind:"Противоположность", prompt:"Qual è il contrario di facile?", answers:["difficile"]},
+  {topic:"Прилагательные", kind:"Противоположность", prompt:"Qual è il contrario di bello?", answers:["brutto"]},
+  {topic:"Прилагательные", kind:"Собери фразу целиком", prompt:"Il compito (facile — difficile) → Il compito non è facile, è ___.", answers:["difficile"]},
+  {topic:"Прилагательные", kind:"Собери фразу целиком", prompt:"La macchina (veloce — lento) → La macchina non è veloce, è ___.", answers:["lenta"], trans:"lento согласуется с ж.р.: lenta"},
 
-  // ---- andare / venire ----
-  { id:'c36', it:'Vado a lavorare ogni mattina alle otto.', ru:'Я иду на работу каждое утро в восемь.', topics:['andare','tempo'] },
-  { id:'c37', it:'Andiamo in Francia o veniamo in Italia?', ru:'Мы едем во Францию или приезжаем в Италию?', topics:['andare','venire'] },
-  { id:'c38', it:'Da dove vieni? Vengo da San Pietroburgo.', ru:'Откуда ты? Я из Санкт-Петербурга.', topics:['venire','domande'] },
-  { id:'c39', it:'Voi andate da Lina stasera?', ru:'Вы идёте к Лине сегодня вечером?', topics:['andare','domande'] },
-  { id:'c40', it:'Vado al cinema in autobus, non a piedi.', ru:'Я еду в кино на автобусе, не пешком.', topics:['andare','negazione'] },
-  { id:'c41', it:'I miei amici vanno al mare, io non vado.', ru:'Мои друзья едут на море, я не еду.', topics:['andare','negazione','pronomi'] },
-  { id:'c42', it:'A che ora viene Giovanni domani?', ru:'Во сколько придёт Джованни завтра?', topics:['venire','domande','tempo'] },
-  { id:'c43', it:'Domani andiamo a Roma in treno.', ru:'Завтра мы едем в Рим на поезде.', topics:['andare','tempo'] },
-  { id:'c44', it:'Il sabato non vado a lavorare.', ru:'По субботам я не хожу на работу.', topics:['andare','negazione','tempo'] },
-  { id:'c45', it:'A casa nostra stasera vengono alcuni ospiti.', ru:'К нам домой сегодня вечером придут гости.', topics:['venire','tempo'] },
-  { id:'c46', it:'Ragazzi, dove andate?', ru:'Ребята, куда вы идёте?', topics:['andare','domande'] },
-  { id:'c47', it:'Mio padre va in ufficio in macchina.', ru:'Мой отец едет в офис на машине.', topics:['andare','genere'] },
-  { id:'c48', it:'Vengo da te fra un\'ora.', ru:'Я приду к тебе через час.', topics:['venire','tempo'] },
+  // 🔤 Глаголы -are/-ere/-ire по лицам
+  {topic:"Глаголы -are/-ere/-ire", kind:"Спряжение · -are", prompt:"Io ___ la TV. (guardare)", answers:["guardo"]},
+  {topic:"Глаголы -are/-ere/-ire", kind:"Спряжение · -are", prompt:"Tu ___ la TV? (guardare)", answers:["guardi"]},
+  {topic:"Глаголы -are/-ere/-ire", kind:"Спряжение · -are", prompt:"Lui ___ la TV. (guardare)", answers:["guarda"]},
+  {topic:"Глаголы -are/-ere/-ire", kind:"Спряжение · -are", prompt:"Noi ___ la TV. (guardare)", answers:["guardiamo"]},
+  {topic:"Глаголы -are/-ere/-ire", kind:"Спряжение · -are", prompt:"Voi ___ la TV? (guardare)", answers:["guardate"]},
+  {topic:"Глаголы -are/-ere/-ire", kind:"Спряжение · -are", prompt:"Loro ___ la TV. (guardare)", answers:["guardano"]},
+  {topic:"Глаголы -are/-ere/-ire", kind:"Спряжение · -ere", prompt:"Io ___ una lettera. (scrivere)", answers:["scrivo"]},
+  {topic:"Глаголы -are/-ere/-ire", kind:"Спряжение · -ere", prompt:"Tu ___ una lettera? (scrivere)", answers:["scrivi"]},
+  {topic:"Глаголы -are/-ere/-ire", kind:"Спряжение · -ere", prompt:"Lei ___ una lettera. (scrivere)", answers:["scrive"]},
+  {topic:"Глаголы -are/-ere/-ire", kind:"Спряжение · -ere", prompt:"Noi ___ una lettera. (scrivere)", answers:["scriviamo"]},
+  {topic:"Глаголы -are/-ere/-ire", kind:"Спряжение · -ere", prompt:"Voi ___ una lettera? (scrivere)", answers:["scrivete"]},
+  {topic:"Глаголы -are/-ere/-ire", kind:"Спряжение · -ere", prompt:"Loro ___ una lettera. (scrivere)", answers:["scrivono"]},
+  {topic:"Глаголы -are/-ere/-ire", kind:"Спряжение · -ire", prompt:"Io ___ otto ore. (dormire)", answers:["dormo"]},
+  {topic:"Глаголы -are/-ere/-ire", kind:"Спряжение · -ire", prompt:"Tu ___ bene? (dormire)", answers:["dormi"]},
+  {topic:"Глаголы -are/-ere/-ire", kind:"Спряжение · -ire", prompt:"Lui ___ molto. (dormire)", answers:["dorme"]},
+  {topic:"Глаголы -are/-ere/-ire", kind:"Спряжение · -ire", prompt:"Noi ___ poco. (dormire)", answers:["dormiamo"]},
+  {topic:"Глаголы -are/-ere/-ire", kind:"Спряжение · -ire", prompt:"Voi ___ bene? (dormire)", answers:["dormite"]},
+  {topic:"Глаголы -are/-ere/-ire", kind:"Спряжение · -ire", prompt:"Loro ___ tutto il giorno. (dormire)", answers:["dormono"]},
 
-  // ---- fare / stare ----
-  { id:'c49', it:'Che cosa fai nel tempo libero?', ru:'Что ты делаешь в свободное время?', topics:['fare','domande'] },
-  { id:'c50', it:'Di solito faccio sport e gioco a tennis.', ru:'Обычно я занимаюсь спортом и играю в теннис.', topics:['fare','avverbi_frequenza'] },
-  { id:'c51', it:'Io sto quasi sempre a casa la sera.', ru:'Я почти всегда дома по вечерам.', topics:['stare','avverbi_frequenza'] },
-  { id:'c52', it:'Non sono brava come te, sto sempre a casa.', ru:'Я не такая хорошая, как ты, я всегда дома.', topics:['stare','negazione','essere'] },
-  { id:'c53', it:'Faccio ginnastica e poi vado in bicicletta.', ru:'Я делаю гимнастику, а потом катаюсь на велосипеде.', topics:['fare','andare'] },
-  { id:'c54', it:'Come stai oggi?', ru:'Как ты сегодня?', topics:['stare','domande'] },
-  { id:'c55', it:'I bambini fanno i compiti ogni giorno.', ru:'Дети делают домашнее задание каждый день.', topics:['fare','avverbi_frequenza'] },
+  // ❓ Вопросы
+  {topic:"Вопросы", kind:"Вставь вопросительное слово", prompt:"___ ti chiami?", answers:["come"]},
+  {topic:"Вопросы", kind:"Вставь вопросительное слово", prompt:"___ abiti?", answers:["dove"]},
+  {topic:"Вопросы", kind:"Вставь вопросительное слово", prompt:"___ anni hai?", answers:["quanti"]},
+  {topic:"Вопросы", kind:"Вставь вопросительное слово", prompt:"___ costa questa gonna?", answers:["quanto"]},
+  {topic:"Вопросы", kind:"Вставь вопросительное слово", prompt:"___ libri leggi di solito?", answers:["quanti"]},
+  {topic:"Вопросы", kind:"Вставь вопросительное слово", prompt:"___ macchina hai?", answers:["che"]},
+  {topic:"Вопросы", kind:"Вставь вопросительное слово", prompt:"___ cucina stasera?", answers:["chi"]},
+  {topic:"Вопросы", kind:"Вставь вопросительное слово", prompt:"___ cosa fai nel tempo libero?", answers:["che"]},
+  {topic:"Вопросы", kind:"Вставь вопросительное слово", prompt:"___ vai in vacanza quest'anno?", answers:["dove"]},
+  {topic:"Вопросы", kind:"Вставь вопросительное слово", prompt:"___ lingue parli?", answers:["che"]},
+  {topic:"Вопросы", kind:"Вставь вопросительное слово", prompt:"___ studi l'italiano?", answers:["perché"]},
+  {topic:"Вопросы", kind:"Различаем похожую пару", prompt:"Спросить национальность/происхождение — целиком", answers:["di dove sei","di dove sei?"]},
+  {topic:"Вопросы", kind:"Различаем похожую пару", prompt:"Спросить, откуда ты приезжаешь/родом (venire) — целиком", answers:["da dove vieni","da dove vieni?"]},
+  {topic:"Вопросы", kind:"Вопрос к готовому ответу", prompt:"Ответ: «Abito a Roma.» Какой вопрос?", answers:["dove abiti","dove abiti?"]},
+  {topic:"Вопросы", kind:"Вопрос к готовому ответу", prompt:"Ответ: «Ho ventidue anni.» Какой вопрос?", answers:["quanti anni hai","quanti anni hai?"]},
+  {topic:"Вопросы", kind:"Вопрос к готовому ответу", prompt:"Ответ: «Vado in Francia.» Какой вопрос?", answers:["dove vai","dove vai?"]},
+  {topic:"Вопросы", kind:"Вопрос к готовому ответу", prompt:"Ответ: «Studio italiano da sei mesi.» Какой вопрос?", answers:["da quanto tempo studi l'italiano","da quanto tempo studi l'italiano?"]},
+  {topic:"Вопросы", kind:"Перевод короткой фразы", prompt:"Какой сегодня день?", answers:["che giorno è oggi","che giorno è oggi?"]},
+  {topic:"Вопросы", kind:"Перевод короткой фразы", prompt:"Сколько тебе лет?", answers:["quanti anni hai","quanti anni hai?"]},
+  {topic:"Вопросы", kind:"Перевод короткой фразы", prompt:"Почему ты хочешь жить в Италии?", answers:["perché vuoi abitare in italia","perché vuoi abitare in italia?"]},
+  {topic:"Вопросы", kind:"Перевод короткой фразы", prompt:"Ты откуда родом?", answers:["di dove sei","di dove sei?"]},
 
-  // ---- avere idioms ----
-  { id:'c56', it:'Ho fame e ho anche sete.', ru:'Я голоден и ещё хочу пить.', topics:['avere'] },
-  { id:'c57', it:'Quando viaggio, ho sempre un po\' di paura.', ru:'Когда путешествую, мне всегда немного страшно.', topics:['avere','avverbi_frequenza'] },
-  { id:'c58', it:'Ho sonno, voglio dormire.', ru:'Я хочу спать, я хочу спать.', ruAlt:['Мне хочется спать, я хочу спать.'], topics:['avere','volere'] },
-  { id:'c59', it:'Il treno parte tra due minuti, ho fretta!', ru:'Поезд отправляется через две минуты, я спешу!', topics:['avere','tempo'] },
-  { id:'c60', it:'Ho bisogno di studiare prima dell\'esame.', ru:'Мне нужно учиться перед экзаменом.', topics:['avere'] },
-  { id:'c61', it:'D\'estate ho sempre caldo, d\'inverno ho freddo.', ru:'Летом мне всегда жарко, зимой холодно.', topics:['avere','avverbi_frequenza'] },
-  { id:'c62', it:'Quanti anni hai? Ho venticinque anni.', ru:'Сколько тебе лет? Мне двадцать пять лет.', topics:['avere','domande','numeri'] },
-  { id:'c63', it:'Non abbiamo fretta, abbiamo tempo.', ru:'Мы не спешим, у нас есть время.', topics:['avere','negazione'] },
+  // 🗣 О себе — глаголы и состояния
+  {topic:"О себе", kind:"Cloze · essere", prompt:"Io ___ russa.", answers:["sono"]},
+  {topic:"О себе", kind:"Cloze · essere", prompt:"Tu ___ italiano?", answers:["sei"]},
+  {topic:"О себе", kind:"Cloze · essere", prompt:"Noi ___ stranieri.", answers:["siamo"]},
+  {topic:"О себе", kind:"Cloze · avere", prompt:"Io ___ un fratello.", answers:["ho"]},
+  {topic:"О себе", kind:"Cloze · avere", prompt:"Loro ___ due gatti.", answers:["hanno"]},
+  {topic:"О себе", kind:"Cloze · abitare", prompt:"Io ___ a Mosca.", answers:["abito"]},
+  {topic:"О себе", kind:"Cloze · chiamarsi", prompt:"Io mi ___ Cristina.", answers:["chiamo"]},
+  {topic:"О себе", kind:"Cloze · chiamarsi", prompt:"Lui si ___ Marco.", answers:["chiama"]},
+  {topic:"О себе", kind:"Cloze · fare (профессия)", prompt:"Che lavoro ___?", answers:["fai"]},
+  {topic:"О себе", kind:"Cloze · fare (профессия)", prompt:"Io ___ l'ingegnere.", answers:["faccio"]},
+  {topic:"О себе", kind:"Cloze · fare", prompt:"Noi ___ i compiti.", answers:["facciamo"]},
+  {topic:"О себе", kind:"Cloze · andare", prompt:"Io ___ a scuola ogni giorno.", answers:["vado"]},
+  {topic:"О себе", kind:"Cloze · andare", prompt:"Tu ___ a lavorare?", answers:["vai"]},
+  {topic:"О себе", kind:"Cloze · venire", prompt:"Loro ___ da noi domenica.", answers:["vengono"]},
+  {topic:"О себе", kind:"Cloze · uscire (отрицание)", prompt:"Io non ___.", answers:["esco"]},
+  {topic:"О себе", kind:"Cloze · uscire", prompt:"Il sabato sera lei ___.", answers:["esce"]},
+  {topic:"О себе", kind:"Cloze · volere", prompt:"Io ___ un caffè.", answers:["voglio"]},
+  {topic:"О себе", kind:"Cloze · avere + идиома", prompt:"Ho ___. (голоден)", answers:["fame"]},
+  {topic:"О себе", kind:"Cloze · avere + идиома", prompt:"Ho ___. (хочу пить)", answers:["sete"]},
+  {topic:"О себе", kind:"Cloze · avere + идиома", prompt:"Ho ___. (хочу спать)", answers:["sonno"]},
+  {topic:"О себе", kind:"Cloze · avere + идиома", prompt:"Ho ___. (мне холодно)", answers:["freddo"]},
+  {topic:"О себе", kind:"Cloze · avere + идиома", prompt:"Ho ___. (мне жарко)", answers:["caldo"]},
+  {topic:"О себе", kind:"Cloze · avere + di", prompt:"Ho ___ di studiare. (нуждаюсь)", answers:["bisogno"]},
+  {topic:"О себе", kind:"Cloze · avere + di", prompt:"Ho ___ del buio. (боюсь)", answers:["paura"]},
+  {topic:"О себе", kind:"Cloze · essere + прилаг. состояния", prompt:"Sono ___. (уставший)", answers:["stanco"]},
+  {topic:"О себе", kind:"Cloze · essere + прилаг. состояния", prompt:"Sono ___. (грустный)", answers:["triste"]},
+  {topic:"О себе", kind:"Cloze · essere + прилаг. состояния", prompt:"Sono ___. (счастливый)", answers:["felice"]},
+  {topic:"О себе", kind:"Cloze · essere + прилаг. состояния", prompt:"Sono ___. (сердитый)", answers:["arrabbiato"]},
 
-  // ---- c'è / ci sono ----
-  { id:'c64', it:'C\'è un libro sul tavolo.', ru:'На столе есть книга.', topics:['ce'] },
-  { id:'c65', it:'Ci sono molti turisti a Firenze.', ru:'Во Флоренции много туристов.', topics:['ce'] },
-  { id:'c66', it:'In centro non c\'è lo sciopero oggi.', ru:'В центре сегодня нет забастовки.', topics:['ce','negazione'] },
-  { id:'c67', it:'Quante persone ci sono in casa?', ru:'Сколько человек дома?', topics:['ce','domande','numeri'] },
-  { id:'c68', it:'A Bologna c\'è una bella università.', ru:'В Болонье красивый университет.', topics:['ce'] },
+  // 🎯 Досуг и вкусы
+  {topic:"Досуг и вкусы", kind:"Cloze · piacere ед.ч.", prompt:"A me ___ leggere.", answers:["piace"]},
+  {topic:"Досуг и вкусы", kind:"Cloze · piacere мн.ч.", prompt:"Mi ___ le canzoni italiane.", answers:["piacciono"]},
+  {topic:"Досуг и вкусы", kind:"Местоимение вместо a + имя", prompt:"A Francesca non piace il caffè. → Non ___ piace il caffè.", answers:["le"]},
+  {topic:"Досуг и вкусы", kind:"Местоимение вместо a + noi", prompt:"A noi non piace il caffè. → Non ___ piace il caffè.", answers:["ci"]},
+  {topic:"Досуг и вкусы", kind:"Местоимение · a lui", prompt:"A lui ___ piace il calcio.", answers:["gli"]},
+  {topic:"Досуг и вкусы", kind:"Местоимение · a lei", prompt:"A lei ___ piace ballare.", answers:["le"]},
+  {topic:"Досуг и вкусы", kind:"Местоимение · a voi", prompt:"A voi ___ piace il tiramisù?", answers:["vi"]},
+  {topic:"Досуг и вкусы", kind:"Местоимение · a loro", prompt:"A loro ___ piacciono i western?", answers:["gli"]},
+  {topic:"Досуг и вкусы", kind:"Найди ошибку · впиши верное слово", prompt:"«Mi piace i libri.» — что не так?", answers:["piacciono"], trans:"libri — мн.ч., значит piacciono"},
+  {topic:"Досуг и вкусы", kind:"Cloze · предлог", prompt:"Vado ___ palestra due volte alla settimana.", answers:["in"]},
+  {topic:"Досуг и вкусы", kind:"Cloze · предлог", prompt:"Studio economia ___ Torino.", answers:["a"]},
+  {topic:"Досуг и вкусы", kind:"Cloze · предлог", prompt:"Vengo ___ San Pietroburgo.", answers:["da"]},
+  {topic:"Досуг и вкусы", kind:"Cloze · предлог", prompt:"Vado ___ Italia in vacanza.", answers:["in"]},
+  {topic:"Досуг и вкусы", kind:"Cloze · предлог", prompt:"Vado ___ piedi.", answers:["a"]},
+  {topic:"Досуг и вкусы", kind:"Cloze · артикль с suonare", prompt:"Suono ___ chitarra.", answers:["la"]},
+  {topic:"Досуг и вкусы", kind:"Cloze · предлог", prompt:"Gioco ___ tennis.", answers:["a"]},
+  {topic:"Досуг и вкусы", kind:"Cloze · предлог", prompt:"Vado ___ scuola.", answers:["a"]},
+  {topic:"Досуг и вкусы", kind:"Cloze · стянутый артикль", prompt:"Vado ___ cinema. (a+il)", answers:["al"]},
+  {topic:"Досуг и вкусы", kind:"Cloze · стянутый артикль", prompt:"Vado ___ mare. (a+il)", answers:["al"]},
+  {topic:"Досуг и вкусы", kind:"Cloze · предлог", prompt:"Vado ___ montagna.", answers:["in"]},
+  {topic:"Досуг и вкусы", kind:"Cloze · предлог", prompt:"Vado ___ spiaggia.", answers:["in"]},
+  {topic:"Досуг и вкусы", kind:"Cloze · предлог", prompt:"Vado ___ banca.", answers:["in"]},
+  {topic:"Досуг и вкусы", kind:"Cloze · предлог", prompt:"Vado ___ farmacia.", answers:["in"]},
+  {topic:"Досуг и вкусы", kind:"Cloze · артикль", prompt:"Faccio ___ spesa.", answers:["la"]},
+  {topic:"Досуг и вкусы", kind:"Cloze · артикль", prompt:"Faccio ___ passeggiata.", answers:["una"]},
+  {topic:"Досуг и вкусы", kind:"Cloze · предлог", prompt:"Gioco ___ carte.", answers:["a"]},
+  {topic:"Досуг и вкусы", kind:"Cloze · предлог", prompt:"Vado ___ bicicletta.", answers:["in"]},
+  {topic:"Досуг и вкусы", kind:"Перевод фразы", prompt:"Тебе нравятся комиксы?", answers:["ti piacciono i fumetti","ti piacciono i fumetti?"]},
+  {topic:"Досуг и вкусы", kind:"Перевод фразы", prompt:"Мне нравится готовить.", answers:["mi piace cucinare"]},
+  {topic:"Досуг и вкусы", kind:"Cloze · частотность", prompt:"Vado in piscina ___ volte alla settimana. (два)", answers:["due"]},
+  {topic:"Досуг и вкусы", kind:"Перевод фразы", prompt:"Я никогда не хожу в кино.", answers:["non vado mai al cinema"]},
+  {topic:"Досуг и вкусы", kind:"Cloze · предлог", prompt:"Studio l'italiano ___ sei mesi. (уже 6 месяцев)", answers:["da"]},
+  {topic:"Досуг и вкусы", kind:"Перевод фразы", prompt:"С удовольствием!", answers:["volentieri"]},
 
-  // ---- articoli ----
-  { id:'c69', it:'Lo studente legge un libro interessante.', ru:'Студент читает интересную книгу.', topics:['articoli','genere'] },
-  { id:'c70', it:'Gli amici vanno al cinema insieme.', ru:'Друзья идут в кино вместе.', topics:['articoli','andare'] },
-  { id:'c71', it:'L\'amica di Marco ha una macchina nuova.', ru:'Подруга Марко имеет новую машину.', ruAlt:['У подруги Марко новая машина.'], topics:['articoli','avere','genere'] },
-  { id:'c72', it:'Lo zaino è pesante, le chiavi sono leggere.', ru:'Рюкзак тяжёлый, ключи лёгкие.', topics:['articoli','essere','genere'] },
-
-  // ---- domande (question words) ----
-  { id:'c73', it:'Che lingue parli?', ru:'На каких языках ты говоришь?', topics:['domande'] },
-  { id:'c74', it:'Che cosa hai comprato oggi?', ru:'Что ты купил сегодня?', topics:['domande','tempo'] },
-  { id:'c75', it:'Chi ti ha chiamato stamattina?', ru:'Кто тебе звонил сегодня утром?', topics:['domande','tempo'] },
-  { id:'c76', it:'Quanto costa questa gonna?', ru:'Сколько стоит эта юбка?', topics:['domande'] },
-  { id:'c77', it:'Quali libri vuoi leggere?', ru:'Какие книги ты хочешь почитать?', topics:['domande','volere'] },
-  { id:'c78', it:'Com\'è la giornata oggi?', ru:'Какой сегодня день?', topics:['domande','tempo'] },
-  { id:'c79', it:'Di dove sei? Sono di Mosca.', ru:'Откуда ты родом? Я из Москвы.', topics:['domande','essere'] },
-
-  // ---- avverbi di frequenza ----
-  { id:'c80', it:'La sera usciamo spesso con gli amici.', ru:'Вечером мы часто выходим с друзьями.', topics:['avverbi_frequenza','uscire'] },
-  { id:'c81', it:'Non vado mai al mercato la domenica.', ru:'Я никогда не хожу на рынок по воскресеньям.', topics:['avverbi_frequenza','negazione','andare'] },
-  { id:'c82', it:'Qualche volta cucino la pasta italiana.', ru:'Иногда я готовлю итальянскую пасту.', topics:['avverbi_frequenza'] },
-  { id:'c83', it:'Raramente ho tempo libero durante la settimana.', ru:'У меня редко есть свободное время в течение недели.', topics:['avverbi_frequenza','avere'] },
-  { id:'c84', it:'Di solito faccio la spesa il sabato mattina.', ru:'Обычно я хожу за покупками в субботу утром.', topics:['avverbi_frequenza','fare','tempo'] },
-
-  // ---- numeri / tempo / giorni ----
-  { id:'c85', it:'Sono le sette e venti di mattina.', ru:'Сейчас семь двадцать утра.', topics:['numeri','tempo'] },
-  { id:'c86', it:'Mercoledì pomeriggio ho lezione di italiano.', ru:'В среду днём у меня урок итальянского.', topics:['tempo'] },
-  { id:'c87', it:'Martedì pomeriggio andiamo in piscina.', ru:'Во вторник днём мы идём в бассейн.', topics:['tempo','andare'] },
-  { id:'c88', it:'Sabato sera vado al cinema con gli amici.', ru:'В субботу вечером я иду в кино с друзьями.', topics:['tempo','andare'] },
-  { id:'c89', it:'Ho trentacinque anni, non venticinque.', ru:'Мне тридцать пять лет, а не двадцать пять.', topics:['avere','numeri','negazione'] },
-
-  // ---- professioni / lavoro ----
-  { id:'c90', it:'Che lavoro fai? Faccio l\'insegnante.', ru:'Кем ты работаешь? Я работаю учителем.', topics:['fare','domande','professioni'] },
-  { id:'c91', it:'Dove lavori? Lavoro in un ospedale.', ru:'Где ты работаешь? Я работаю в больнице.', topics:['domande','professioni'] },
-  { id:'c92', it:'Sono in Italia per lavoro, non per turismo.', ru:'Я в Италии по работе, не для туризма.', topics:['essere','negazione','professioni'] },
-  { id:'c93', it:'Lei è medico, lui è ingegnere.', ru:'Она врач, он инженер.', topics:['essere','professioni','genere'] },
-
-  // ---- tempo libero ----
-  { id:'c94', it:'Nel tempo libero leggo libri e ascolto musica.', ru:'В свободное время я читаю книги и слушаю музыку.', topics:['tempo_libero'] },
-  { id:'c95', it:'Suono il pianoforte e gioco a calcio.', ru:'Я играю на пианино и играю в футбол.', topics:['tempo_libero'] },
-  { id:'c96', it:'Mi piace fare una passeggiata la sera.', ru:'Мне нравится гулять по вечерам.', topics:['piacere','tempo_libero'] },
-  { id:'c97', it:'Studio l\'italiano da sei mesi.', ru:'Я учу итальянский шесть месяцев.', topics:['tempo'] },
-  { id:'c98', it:'Vorrei imparare a suonare la chitarra.', ru:'Я хотел бы научиться играть на гитаре.', ruAlt:['Я хотела бы научиться играть на гитаре.'], topics:['volere','tempo_libero'] },
-
-  // ---- mixed review ----
-  { id:'c99', it:'Quando ho tempo libero, vado in bicicletta o leggo.', ru:'Когда у меня есть свободное время, я катаюсь на велосипеде или читаю.', topics:['avere','andare','tempo_libero'] },
-  { id:'c100', it:'Non sono di Roma, vengo da Helsinki.', ru:'Я не из Рима, я приехала из Хельсинки.', ruAlt:['Я не из Рима, я приехал из Хельсинки.'], topics:['essere','venire','negazione'] },
-  { id:'c101', it:'Di solito non ho fretta la mattina presto.', ru:'Обычно я не спешу рано утром.', topics:['avverbi_frequenza','avere','negazione'] },
-  { id:'c102', it:'C\'è qualcuno in cucina? Sì, c\'è mia madre.', ru:'Кто-то есть на кухне? Да, там моя мама.', topics:['ce','genere'] },
+  // 📅 Время, даты и сезоны
+  {topic:"Время и даты", kind:"Cloze · сезон", prompt:"D'___ fa freddo.", answers:["inverno"]},
+  {topic:"Время и даты", kind:"Cloze · сезон", prompt:"D'___ fa caldo.", answers:["estate"]},
+  {topic:"Время и даты", kind:"Месяц → сезон", prompt:"Agosto è in quale stagione?", answers:["estate"]},
+  {topic:"Время и даты", kind:"Месяц → сезон", prompt:"Marzo è in quale stagione?", answers:["primavera"]},
+  {topic:"Время и даты", kind:"Месяц → сезон", prompt:"Dicembre è in quale stagione?", answers:["inverno"]},
+  {topic:"Время и даты", kind:"Месяц → сезон", prompt:"Settembre è in quale stagione?", answers:["autunno"]},
+  {topic:"Время и даты", kind:"Порядковое числительное", prompt:"1 maggio → ___ maggio", answers:["il primo","primo"]},
+  {topic:"Время и даты", kind:"Порядковое числительное", prompt:"2 giugno → ___ giugno", answers:["il due","due"]},
+  {topic:"Время и даты", kind:"Порядковое числительное", prompt:"13 luglio → ___ luglio", answers:["il tredici","tredici"]},
+  {topic:"Время и даты", kind:"Порядковое числительное", prompt:"8 marzo → ___ marzo", answers:["l'otto","otto"]},
+  {topic:"Время и даты", kind:"Перевод короткой фразы", prompt:"Какой сегодня день?", answers:["che giorno è oggi","che giorno è oggi?"]},
+  {topic:"Время и даты", kind:"День недели", prompt:"Oggi è lunedì, domani è ___.", answers:["martedì"]},
+  {topic:"Время и даты", kind:"День недели", prompt:"Oggi è mercoledì, domani è ___.", answers:["giovedì"]},
+  {topic:"Время и даты", kind:"День недели", prompt:"Oggi è venerdì, dopodomani è ___.", answers:["domenica"]},
+  {topic:"Время и даты", kind:"Cloze · avverbio di frequenza", prompt:"Vado in palestra ___. (всегда)", answers:["sempre"]},
+  {topic:"Время и даты", kind:"Cloze · avverbio di frequenza", prompt:"Vado al cinema ___. (редко)", answers:["raramente"]},
+  {topic:"Время и даты", kind:"Cloze · avverbio di frequenza", prompt:"Non vado ___ al ristorante. (никогда)", answers:["mai"]},
+  {topic:"Время и даты", kind:"Cloze · частотность", prompt:"Vado in piscina qualche ___. (иногда)", answers:["volta"]},
+  {topic:"Время и даты", kind:"Cloze · частотность", prompt:"Quante volte ___ settimana vai in piscina?", answers:["alla"]},
+  {topic:"Время и даты", kind:"Перевод фразы", prompt:"В эту среду у меня урок.", answers:["mercoledì ho una lezione"], trans:"конкретный ближайший день — артикль не нужен"},
+  {topic:"Время и даты", kind:"Перевод фразы", prompt:"По средам я занимаюсь итальянским.", answers:["il mercoledì studio italiano"], trans:"регулярная привычка — нужен артикль il"},
+  {topic:"Время и даты", kind:"Перевод фразы", prompt:"Мой день рождения — первое ноября.", answers:["il mio compleanno è il primo novembre"]},
 ];
 
+CARD_DATA.forEach((c,i)=>{ c.id = "c"+i; });
+
+/* ======================= SRS SETTINGS ======================= */
+const INTERVALS = [0, 1, 3, 7, 14, 30, 60, 120]; // days
 const NEW_PER_DAY = 15;
-const STORAGE_KEY = 'italiano_v3';
+const STORAGE_SRS = "italiano_v3_srs";
+const STORAGE_STATS = "italiano_v3_stats";
+const STORAGE_LASTOPEN = "italiano_v3_lastday";
 
-let state = load();
-let queue = [];
-let qi = 0;
-let currentDir = 'it2ru';
-let answered = false;
-let activeTab = 'study';
-
-function defaultState() {
-  return {
-    cards: {},     // id -> {ease, interval, due, reps, lapses}
-    streak: 0, lastStudyDay: null,
-    todayCount: 0, todayDay: null,
-    diary: []
-  };
-}
-
-function load() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return defaultState();
-    const parsed = JSON.parse(raw);
-    return Object.assign(defaultState(), parsed);
-  } catch (e) { return defaultState(); }
-}
-function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
-
-// day rollover at 4am
-function ankiDay() {
+/* day rollover at 4am */
+function todayKey(){
   const d = new Date();
-  d.setHours(d.getHours() - 4);
-  return d.toISOString().slice(0,10);
+  const adj = new Date(d.getTime() - 4*60*60*1000);
+  return adj.toISOString().slice(0,10);
 }
 
-function ensureDay() {
-  const today = ankiDay();
-  if (state.todayDay !== today) {
-    if (state.todayDay) {
-      const prev = new Date(state.todayDay);
-      const cur = new Date(today);
-      const diffDays = Math.round((cur - prev) / 86400000);
-      if (diffDays === 1 && state.todayCount > 0) state.streak += 1;
-      else if (diffDays !== 0) state.streak = (state.todayCount > 0) ? 1 : 0;
+function loadSRS(){
+  try{ return JSON.parse(localStorage.getItem(STORAGE_SRS)) || {}; }catch(e){ return {}; }
+}
+function saveSRS(state){ localStorage.setItem(STORAGE_SRS, JSON.stringify(state)); }
+
+function loadStats(){
+  try{
+    const s = JSON.parse(localStorage.getItem(STORAGE_STATS));
+    if(s && s.day === todayKey()) return s;
+  }catch(e){}
+  return {day: todayKey(), correct:0, wrong:0};
+}
+function saveStats(s){ localStorage.setItem(STORAGE_STATS, JSON.stringify(s)); }
+
+let srsState = loadSRS();
+let stats = loadStats();
+
+function ensureCardState(id){
+  if(!srsState[id]){
+    srsState[id] = {box:0, due: todayKey(), seen:false};
+  }
+  return srsState[id];
+}
+CARD_DATA.forEach(c=>ensureCardState(c.id));
+saveSRS(srsState);
+
+/* ======================= QUEUE BUILDING ======================= */
+let activeTopic = "Смешанное";
+let deck = [];
+let idx = 0;
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function buildDeck(){
+  const today = todayKey();
+  if(activeTopic === "Смешанное"){
+    const due = CARD_DATA.filter(c => srsState[c.id].seen && srsState[c.id].due <= today);
+    const fresh = CARD_DATA.filter(c => !srsState[c.id].seen).slice(0, NEW_PER_DAY);
+    deck = shuffle(due.concat(fresh));
+    if(deck.length === 0){
+      // nothing due, nothing new left today: allow reviewing ahead a little so it's never empty
+      deck = shuffle(CARD_DATA.filter(c => srsState[c.id].seen));
     }
-    state.todayCount = 0;
-    state.todayDay = today;
-    save();
-  }
-}
-
-function cardState(id) {
-  if (!state.cards[id]) {
-    state.cards[id] = { ease: 2.3, interval: 0, due: ankiDay(), reps: 0, lapses: 0, seen: false };
-  }
-  return state.cards[id];
-}
-
-// SM-2-ish, quality auto-derived from correctness (no self-rating)
-function gradeCard(id, quality) {
-  const c = cardState(id);
-  c.seen = true;
-  if (quality < 3) {
-    c.lapses += 1;
-    c.interval = 0;
-    c.reps = 0;
-    c.due = ankiDay();
   } else {
-    c.reps += 1;
-    if (c.reps === 1) c.interval = 1;
-    else if (c.reps === 2) c.interval = 3;
-    else c.interval = Math.round(c.interval * c.ease);
-    c.ease = Math.max(1.3, c.ease + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02)));
-    const d = new Date();
-    d.setDate(d.getDate() + c.interval);
-    c.due = d.toISOString().slice(0,10);
+    deck = shuffle(CARD_DATA.filter(c => c.topic === activeTopic));
   }
-  save();
+  idx = 0;
 }
 
-function buildQueue() {
-  ensureDay();
-  const today = ankiDay();
-  const due = [];
-  const fresh = [];
-  for (const card of CARDS) {
-    const cs = cardState(card.id);
-    if (!cs.seen) fresh.push(card);
-    else if (cs.due <= today) due.push(card);
-  }
-  save();
-  shuffle(due);
-  shuffle(fresh);
-  const newSlice = fresh.slice(0, Math.max(0, NEW_PER_DAY));
-  const combined = due.concat(newSlice);
-  shuffle(combined);
-  // attach random direction per repetition
-  return combined.map(c => ({ card: c, dir: Math.random() < 0.5 ? 'it2ru' : 'ru2it' }));
+/* ======================= MATCHING ======================= */
+function normalize(s){
+  return s.trim().toLowerCase()
+    .replace(/[.,!?]/g,'')
+    .replace(/à/g,'a').replace(/è|é/g,'e').replace(/ì/g,'i').replace(/ò/g,'o').replace(/ù/g,'u');
+}
+function isCorrect(userAns, answers){
+  const u = normalize(userAns);
+  if(!u) return false;
+  return answers.some(ans => normalize(ans) === u);
 }
 
-function shuffle(a) {
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i+1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
+/* ======================= UI ======================= */
+const topics = ["Смешанное", ...Array.from(new Set(CARD_DATA.map(c=>c.topic)))];
+
+function renderTabs(){
+  const tabsEl = document.getElementById('tabs');
+  tabsEl.innerHTML = '';
+  topics.forEach(t=>{
+    const el = document.createElement('div');
+    el.className = 'tab' + (t===activeTopic ? ' active' : '');
+    el.textContent = t;
+    el.addEventListener('click', ()=>{
+      activeTopic = t;
+      buildDeck();
+      renderTabs();
+      renderCard();
+    });
+    tabsEl.appendChild(el);
+  });
 }
 
-// ---------- normalization & matching ----------
-function normalize(s) {
-  return s.toLowerCase()
-    .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // strip accents for comparison
-    .replace(/['’]/g, ' ')
-    .replace(/[^\p{L}\p{N}\s]/gu, '')
-    .replace(/\s+/g, ' ')
-    .trim();
+function renderStats(){
+  document.getElementById('statCorrect').textContent = stats.correct;
+  document.getElementById('statWrong').textContent = stats.wrong;
 }
 
-function levenshtein(a, b) {
-  const m = a.length, n = b.length;
-  if (m === 0) return n;
-  if (n === 0) return m;
-  const dp = Array.from({length: m+1}, () => new Array(n+1).fill(0));
-  for (let i=0;i<=m;i++) dp[i][0]=i;
-  for (let j=0;j<=n;j++) dp[0][j]=j;
-  for (let i=1;i<=m;i++) {
-    for (let j=1;j<=n;j++) {
-      const cost = a[i-1]===b[j-1] ? 0 : 1;
-      dp[i][j] = Math.min(dp[i-1][j]+1, dp[i][j-1]+1, dp[i-1][j-1]+cost);
-    }
-  }
-  return dp[m][n];
+function renderMeta(){
+  const meta = document.getElementById('metaRow');
+  if(deck.length === 0){ meta.textContent = ''; return; }
+  meta.textContent = `Carta ${Math.min(idx+1, deck.length)} di ${deck.length}`;
 }
 
-// Word-level edit distance: substitution cost depends on whether the
-// words are a near-identical typo (allowed) or genuinely different words (not allowed).
-function wordLevelDiff(userWords, correctWords) {
-  const m = userWords.length, n = correctWords.length;
-  // dp[i][j] = {cost, typos} best cost and typo-count to align first i user words with first j correct words
-  const dp = Array.from({length: m+1}, () => new Array(n+1).fill(null));
-  dp[0][0] = { cost: 0, typos: 0 };
-  for (let i=1;i<=m;i++) dp[i][0] = { cost: dp[i-1][0].cost + 1, typos: dp[i-1][0].typos };
-  for (let j=1;j<=n;j++) dp[0][j] = { cost: dp[0][j-1].cost + 1, typos: dp[0][j-1].typos };
-  for (let i=1;i<=m;i++) {
-    for (let j=1;j<=n;j++) {
-      const a = userWords[i-1], b = correctWords[j-1];
-      let subCost, subTypos;
-      if (a === b) { subCost = 0; subTypos = 0; }
-      else {
-        const charDist = levenshtein(a, b);
-        // allow a near-identical typo only for reasonably long words
-        if (charDist === 1 && Math.max(a.length, b.length) >= 4) { subCost = 0.3; subTypos = 1; }
-        else { subCost = 1; subTypos = 0; }
-      }
-      const subOption = { cost: dp[i-1][j-1].cost + subCost, typos: dp[i-1][j-1].typos + subTypos };
-      const delOption = { cost: dp[i-1][j].cost + 1, typos: dp[i-1][j].typos };
-      const insOption = { cost: dp[i][j-1].cost + 1, typos: dp[i][j-1].typos };
-      let bestOpt = subOption;
-      if (delOption.cost < bestOpt.cost) bestOpt = delOption;
-      if (insOption.cost < bestOpt.cost) bestOpt = insOption;
-      dp[i][j] = bestOpt;
-    }
-  }
-  return dp[m][n];
-}
-
-// returns 'exact' | 'close' | 'wrong'
-function matchAnswer(userInput, correctOptions) {
-  const u = normalize(userInput);
-  if (!u) return 'wrong';
-  const uWords = u.split(' ').filter(Boolean);
-  let best = 'wrong';
-  for (const opt of correctOptions) {
-    const o = normalize(opt);
-    if (u === o) return 'exact';
-    const oWords = o.split(' ').filter(Boolean);
-    const result = wordLevelDiff(uWords, oWords);
-    // allow at most 1-2 minor character typos (no wrong/missing/extra words at all)
-    if (result.cost <= 0.6 && result.typos <= 2) best = 'close';
-  }
-  return best;
-}
-
-// ============== RENDER ==============
-function render() {
-  ensureDay();
-  document.getElementById('hStreak').textContent = state.streak;
-  document.getElementById('hToday').textContent = state.todayCount;
-  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === activeTab));
-
-  const screen = document.getElementById('screen');
-  if (activeTab === 'study') renderStudy(screen);
-  else if (activeTab === 'diary') renderDiary(screen);
-  else renderStats(screen);
-}
-
-function renderStudy(screen) {
-  if (qi >= queue.length) {
-    queue = buildQueue();
-    qi = 0;
-  }
-  if (queue.length === 0) {
-    screen.innerHTML = `
-      <div class="empty-state">
-        <div class="big">✅</div>
-        <div>На сегодня всё пройдено.<br>Возвращайся завтра — появятся новые карточки на повторение.</div>
-      </div>`;
+function renderCard(){
+  renderMeta();
+  const area = document.getElementById('cardArea');
+  if(deck.length === 0){
+    area.innerHTML = `<div class="card"><div class="empty">На сегодня всё пройдено 🎉<br>Загляни завтра — появятся новые карточки и повторения.</div></div>`;
     return;
   }
-
-  const item = queue[qi];
-  currentDir = item.dir;
-  const card = item.card;
-  const promptText = currentDir === 'it2ru' ? card.it : card.ru;
-  const promptLabel = currentDir === 'it2ru' ? 'Переведи на русский' : 'Переведи на итальянский';
-
-  const total = queue.length;
-  const pct = Math.round((qi / total) * 100);
-
-  screen.innerHTML = `
-    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
-    <div class="card-box">
-      <div class="dir-badge">${promptLabel}</div>
-      <div class="prompt-text ${currentDir==='it2ru' ? 'it':''}">${promptText}</div>
-      <input type="text" id="answerInput" autocomplete="off" autocapitalize="off" autocorrect="off" placeholder="Твой ответ..." />
-      <button class="btn btn-primary" id="checkBtn">Проверить</button>
-      <div id="feedbackArea"></div>
-      <div class="topics-line">${card.topics.join(' · ')}</div>
+  if(idx >= deck.length){
+    area.innerHTML = `<div class="card"><div class="empty">Тема пройдена!<br>Переключись на другую вкладку или начни заново.</div></div>`;
+    return;
+  }
+  const c = deck[idx];
+  area.innerHTML = `
+    <div class="card">
+      <div class="kind">${c.kind}</div>
+      <div class="prompt">${c.prompt}</div>
+      <input type="text" id="answerInput" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
+      <div class="btnrow">
+        <button class="check-btn" id="checkBtn">Controlla</button>
+        <button class="next-btn" id="nextBtn">Avanti →</button>
+      </div>
+      <div class="feedback" id="feedback"></div>
     </div>
   `;
-
-  answered = false;
   const input = document.getElementById('answerInput');
   input.focus();
-  const checkBtn = document.getElementById('checkBtn');
-  checkBtn.addEventListener('click', () => handleCheck(card));
-  input.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      if (!answered) handleCheck(card);
-      else handleNext();
+  document.getElementById('checkBtn').addEventListener('click', checkAnswer);
+  document.getElementById('nextBtn').addEventListener('click', goNext);
+  input.addEventListener('keydown', (e)=>{
+    if(e.key === 'Enter'){
+      const checkBtn = document.getElementById('checkBtn');
+      if(checkBtn.style.display !== 'none'){ checkAnswer(); }
+      else { goNext(); }
     }
   });
 }
 
-function handleCheck(card) {
-  if (answered) return;
-  answered = true;
-  const input = document.getElementById('answerInput');
-  const userVal = input.value;
-  input.disabled = true;
-  const fbArea = document.getElementById('feedbackArea');
-  const checkBtn = document.getElementById('checkBtn');
-
-  if (currentDir === 'ru2it') {
-    // Producing Italian: grammar accuracy matters -> strict auto-check
-    const correctOptions = [card.it].concat(card.itAlt || []);
-    const correctDisplay = card.it;
-    const result = matchAnswer(userVal, correctOptions);
-    let quality;
-    if (result === 'exact') {
-      quality = 5;
-      fbArea.innerHTML = `<div class="feedback correct">Верно!</div>`;
-    } else if (result === 'close') {
-      quality = 4;
-      fbArea.innerHTML = `<div class="feedback almost">Почти — мелкая опечатка, засчитано.<div class="answer-line">${correctDisplay}</div></div>`;
-    } else {
-      quality = 1;
-      fbArea.innerHTML = `<div class="feedback wrong">Неверно.<div class="answer-line">${correctDisplay}</div></div>`;
-    }
-    state.todayCount += 1;
-    gradeCard(card.id, quality);
-    save();
-    document.getElementById('hToday').textContent = state.todayCount;
-    checkBtn.textContent = 'Дальше';
-    checkBtn.onclick = handleNext;
+function updateSRSAfterAnswer(card, correct){
+  const st = srsState[card.id];
+  const today = todayKey();
+  st.seen = true;
+  if(correct){
+    st.box = Math.min(st.box + 1, INTERVALS.length - 1);
+    const days = INTERVALS[st.box];
+    const due = new Date();
+    due.setDate(due.getDate() + days);
+    st.due = due.toISOString().slice(0,10);
   } else {
-    // Translating into Russian: meaning matters more than exact wording -> self-rating
-    const correctDisplay = card.ru;
-    fbArea.innerHTML = `
-      <div class="feedback almost">
-        Эталон: <div class="answer-line">${correctDisplay}</div>
-        <div style="margin-top:10px;">Твой ответ совпадает по смыслу?</div>
-      </div>
-      <button class="btn btn-primary" id="selfYes" style="margin-top:8px;">Да, верно</button>
-      <button class="btn btn-secondary" id="selfNo">Нет, неверно</button>
-    `;
-    checkBtn.style.display = 'none';
-    document.getElementById('selfYes').addEventListener('click', () => selfGrade(card, true));
-    document.getElementById('selfNo').addEventListener('click', () => selfGrade(card, false));
+    st.box = 0;
+    st.due = today;
+  }
+  saveSRS(srsState);
+}
+
+function checkAnswer(){
+  const c = deck[idx];
+  const input = document.getElementById('answerInput');
+  const val = input.value;
+  const fb = document.getElementById('feedback');
+  const correct = isCorrect(val, c.answers);
+
+  input.disabled = true;
+  document.getElementById('checkBtn').style.display = 'none';
+  document.getElementById('nextBtn').style.display = 'block';
+
+  if(correct){
+    fb.className = 'feedback correct';
+    fb.innerHTML = '✓ Giusto!'
+      + '<div class="correct-answer">' + c.answers[0] + '</div>'
+      + (c.trans ? '<div style="font-weight:400;margin-top:4px;">' + c.trans + '</div>' : '');
+    stats.correct++;
+  } else {
+    fb.className = 'feedback incorrect';
+    fb.innerHTML = '✗ Non esatto.<div class="correct-answer">' + c.answers[0] + '</div>'
+      + (c.trans ? '<div style="font-weight:400;margin-top:4px;">' + c.trans + '</div>' : '');
+    stats.wrong++;
+  }
+  saveStats(stats);
+  renderStats();
+
+  if(activeTopic === "Смешанное"){
+    updateSRSAfterAnswer(c, correct);
+  } else {
+    // topic drill still feeds the same SRS record
+    updateSRSAfterAnswer(c, correct);
   }
 }
 
-function selfGrade(card, correct) {
-  const quality = correct ? 5 : 1;
-  state.todayCount += 1;
-  gradeCard(card.id, quality);
-  save();
-  document.getElementById('hToday').textContent = state.todayCount;
-  const fbArea = document.getElementById('feedbackArea');
-  fbArea.innerHTML += `<button class="btn btn-primary" id="nextAfterSelf" style="margin-top:8px;">Дальше</button>`;
-  document.getElementById('nextAfterSelf').addEventListener('click', handleNext);
+function goNext(){
+  idx++;
+  renderCard();
 }
 
-function handleNext() {
-  qi += 1;
-  renderStudy(document.getElementById('screen'));
-}
-
-function renderDiary(screen) {
-  const todayStr = ankiDay();
-  const todayEntry = state.diary.find(d => d.date === todayStr);
-  let html = `
-    <div class="card-box">
-      <div class="dir-badge">Свободное письмо</div>
-      <div class="prompt-text" style="font-size:15px;font-style:normal;">Напиши пару фраз по-итальянски о сегодняшнем дне. Грамматика не должна быть идеальной — важна практика.</div>
-      <textarea id="diaryInput" placeholder="Oggi...">${todayEntry ? todayEntry.text : ''}</textarea>
-      <button class="btn btn-primary" id="diarySave">Сохранить</button>
-    </div>
-  `;
-  if (state.diary.length) {
-    html += `<div style="margin-top:24px;font-size:13px;color:var(--muted);margin-bottom:8px;">Прошлые записи</div>`;
-    state.diary.slice().reverse().forEach(d => {
-      if (d.date === todayStr) return;
-      html += `<div class="diary-entry"><div class="diary-date">${d.date}</div>${escapeHtml(d.text)}</div>`;
-    });
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  if(confirm('Точно сбросить весь прогресс? Это нельзя отменить.')){
+    localStorage.removeItem(STORAGE_SRS);
+    localStorage.removeItem(STORAGE_STATS);
+    srsState = {};
+    CARD_DATA.forEach(c=>ensureCardState(c.id));
+    saveSRS(srsState);
+    stats = {day: todayKey(), correct:0, wrong:0};
+    saveStats(stats);
+    renderStats();
+    buildDeck();
+    renderCard();
   }
-  screen.innerHTML = html;
-  document.getElementById('diarySave').addEventListener('click', () => {
-    const text = document.getElementById('diaryInput').value.trim();
-    if (!text) return;
-    const idx = state.diary.findIndex(d => d.date === todayStr);
-    if (idx >= 0) state.diary[idx].text = text;
-    else state.diary.push({ date: todayStr, text });
-    save();
-    renderDiary(screen);
-  });
-}
-
-function escapeHtml(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-
-function renderStats(screen) {
-  const total = CARDS.length;
-  let seen = 0, mature = 0, dueToday = 0;
-  const today = ankiDay();
-  for (const card of CARDS) {
-    const cs = state.cards[card.id];
-    if (cs && cs.seen) {
-      seen += 1;
-      if (cs.interval >= 21) mature += 1;
-      if (cs.due <= today) dueToday += 1;
-    } else {
-      dueToday += 1; // not yet introduced counts toward available pool, not "due review" strictly
-    }
-  }
-  screen.innerHTML = `
-    <div class="stat-grid">
-      <div class="stat-tile"><div class="num">${state.streak}</div><div class="label">дней подряд</div></div>
-      <div class="stat-tile"><div class="num">${state.todayCount}</div><div class="label">сегодня пройдено</div></div>
-      <div class="stat-tile"><div class="num">${seen}/${total}</div><div class="label">карточек изучено</div></div>
-      <div class="stat-tile"><div class="num">${mature}</div><div class="label">закреплено (21+ дн.)</div></div>
-    </div>
-    <div class="reset-link" id="resetLink">Сбросить весь прогресс</div>
-  `;
-  document.getElementById('resetLink').addEventListener('click', () => {
-    if (!confirm('Точно сбросить весь прогресс?')) return;
-    localStorage.removeItem(STORAGE_KEY);
-    state = defaultState();
-    save();
-    queue = [];
-    qi = 0;
-    render();
-  });
-}
-
-// ============== TABS ==============
-document.querySelectorAll('.tab').forEach(t => {
-  t.addEventListener('click', () => {
-    activeTab = t.dataset.tab;
-    if (activeTab === 'study') { queue = buildQueue(); qi = 0; }
-    render();
-  });
 });
 
-// ============== INIT ==============
-ensureDay();
-queue = buildQueue();
-render();
+/* ======================= INIT ======================= */
+renderTabs();
+renderStats();
+buildDeck();
+renderCard();
 </script>
 </body>
 </html>
